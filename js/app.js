@@ -311,26 +311,26 @@ JwminoController.prototype = {
 //
 //document.addEventListener("deviceready", onDeviceReady, false);
 
-window.writeExport = function(content, cb) {
-    window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
-
-    function gotFS(fileSystem) {
-        fileSystem.root.getFile("/sdcard/Android/data/com.marcomichely/exported/export.json", {create: true}, gotFileEntry, fail);
-    }
-
-    function gotFileEntry(fileEntry) {
-        fileEntry.createWriter(gotFileWriter, fail);
-    }
-
-    function gotFileWriter(writer) {
-        writer.onwrite = function(cb) {
-            console.log("write success");
-            cb('write success');
-        };
-        writer.write(content);
-    }
-
-    function fail(error) {
-        console.log(error.code);
-    }
-}
+//window.writeExport = function(content, cb) {
+//    window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
+//
+//    function gotFS(fileSystem) {
+//        fileSystem.root.getFile("/sdcard/Android/data/com.marcomichely/exported/export.json", {create: true}, gotFileEntry, fail);
+//    }
+//
+//    function gotFileEntry(fileEntry) {
+//        fileEntry.createWriter(gotFileWriter, fail);
+//    }
+//
+//    function gotFileWriter(writer) {
+//        writer.onwrite = function(cb) {
+//            console.log("write success");
+//            cb('write success');
+//        };
+//        writer.write(content);
+//    }
+//
+//    function fail(error) {
+//        console.log(error.code);
+//    }
+//}
