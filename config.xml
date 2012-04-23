@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns		= "http://www.w3.org/ns/widgets"
+	xmlns:gap	= "http://phonegap.com/ns/1.0"
+	id		= "com.marcomichely"
+	version 	= "0.2.1">
+
+	<name>JWMiNo</name>
+
+	<description>JWMiNo stands for "Jehova's Witnesses Ministry Notes".
+
+This is a very simple to use note taking app for Jehovas's Witnesses. Take your ministry notes quick and easy.
+
+Features:
+- add/edit territories
+- add/edit streets
+- add/edit addresses (persons)
+- add/edit visits to that persons
+- filter for address list
+
+Planned features:
+- send notes by email
+- import/export/backup
+- track placements
+
+To track your service time and placements, take look at the app ServiceTime or some other apps that focus this task.
+
+This app will be free for ever!
+
+Keywords: JW, JW Droid, ServiceDroid, Ministry Assistant, On the Ministry
+	</description>
+
+	<author href="http://marco-michely.de"
+		email="marco.michely@gmail.com">
+		Marco Michely
+	</author>
+
+	<gap:platforms>
+		<gap:platform name="android" minVersion="2.1" />
+	</gap:platforms>
+
+	<icon src="icon.png" gap:role="default" />
+
+	<feature name="http://api.phonegap.com/1.0/network"/>
+        <feature name="http://api.phonegap.com/1.0/file"/>
+</widget>
