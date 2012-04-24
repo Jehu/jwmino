@@ -60,19 +60,11 @@ function JwminoController(persistencejs) {
     self.addresses = [{ the_visits : [] }];
     self.visits = [];
 
+    self.tbButtons = './partials/tbbtn_addresses.html';
+
     // currently selected values
     self.curTerritory = {};
-    self.$watch('curTerritory', function() {
-        if(self.curTerritory.ident !== undefined) {
-            $.ui.setTitle(self.curTerritory.ident + ' ' + self.curTerritory.city);
-        }
-    });
     self.curStreet = {};
-    self.$watch('curStreet', function() {
-        if(self.curStreet.name !== undefined) {
-            $.ui.setTitle(self.curStreet.name);
-        }
-    });
     self.curAddress = {
         gender: 'na',
         type: 'na',

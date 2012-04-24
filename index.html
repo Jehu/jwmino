@@ -4,9 +4,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <link rel="stylesheet" href="css/icons.css" />
-    <link rel="stylesheet" href="css/jq.ui.css" />
-    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="lib/iui/iui.css" type="text/css">
+    <link rel="stylesheet" href="lib/iui/t/default/default-theme.css" type="text/css">
+    <!--link rel="stylesheet" href="lib/iui/ext-sandbox/t/defaulthd/defaulthd-theme.css" type="text/css"-->
+    <!--link rel="stylesheet" href="lib/iui/ext-sandbox/t/webos/webos-theme.css" type="text/css"-->
+    <link rel="stylesheet" href="css/main.css" type="text/css" />
     <script src="i18n/de_DE.js" type="application/javascript"></script>
     <script src="lib/moment.min.js" type="application/javascript"></script>
     <script src="lib/sprintf-0.7-beta1.js" type="application/javascript"></script>
@@ -18,97 +20,66 @@
     <script src="lib/persistence.store.websql.js" type="application/javascript"></script>
     <script src="js/model.js" type="application/javascript"></script>
     <script src="js/app.js" type="application/javascript"></script>
-    <script src="lib/jq.ui.min.js" type="application/javascript"></script>
+    <script src="lib/iui/iui.js"></script>
 
-
-    <script>
-        if (!((window.DocumentTouch && document instanceof DocumentTouch) || 'ontouchstart' in window)) {
-            var script = document.createElement("script");
-            script.src = "lib/touch.js";
-            var tag = $("head").append(script);
-            $.os.android = true; //let's make it run like an android device
-            $.os.desktop = true;
-        }
-    </script>
-    <script type="text/javascript">
-        //var myController = angular.element($('body')).scope();
-         
-        var webRoot = "./";
-        //$.ui.autoLaunch = false; //By default, it is set to true and you're app will run right away.  We set it to false to show a splashscreen
-        /* This function runs when the body is loaded.*/
-        var init = function () {
-                $.ui.showBackbutton = false;
-                $.ui.backButtonText = "Back"; // We override the back button text to always say "Back"
-                //window.setTimeout(function () {
-                //    $.ui.launch(); 
-                //}, 1500); //We wait 1.5 seconds to call $.ui.launch after DOMContentLoaded fires
-        };
-        document.addEventListener("DOMContentLoaded", init, false);
-        $.ui.ready(function () {
-            //This function will get executed when $.ui.launch has completed
-        });
- 
-        
-        /* This code is used for appMobi native apps */
-        var onDeviceReady = function () {
-                AppMobi.device.setRotateOrientation("portrait");
-                AppMobi.device.setAutoRotate(false);
-                webRoot = AppMobi.webRoot + "/";
-                //hide splash screen
-                AppMobi.device.hideSplashScreen();
- 
-        };
-        document.addEventListener("appMobi.device.ready", onDeviceReady, false);
-    </script>
 </head>
 <body ng:controller="JwminoController">
-    <div id="jQUi">
 
-        <div id="header">
+        <div class="toolbar">
+            <h1 id="pageTitle"></h1>
+            <a id="backButton" class="button" href="#"></a>
+            <ng:include src="tbButtons"></ng:include>
+            <!--a href="#territories" cla-ss="icon location">{{'Territories list'|i18n}}</a>
+            <a href="#streets" class="icon lamp">{{'Streets'|i18n}}</a-->
         </div>
 
-        <div id="content">
-            <!-- PANEL territories -->
-            <div title="{{'Territories'|i18n}}" class="panel" id="territories" selected="true">
-                <ul>
-                    <li ng:repeat="territory in territories">
-                        <a href="#streets" onclick="$.ui.loadContent('streets')" ng:click="[setCurTerritory(territory), refreshStreets()]">{{territory.ident}} <span ng:show="territory.city">({{territory.city}})</span></a>
-                    </li>
-                </ul>
-            </div>
+        <!-- PANEL territories -->
+        <ul title="{{'Territories'|i18n}}" class="panel" id="territories" selected="true">
+            <li ng:repeat="territory in territories">
+                <a href="#streets" ng:click="[setCurTerritory(territory), refreshStreets()]">{{territory.ident}} <span ng:show="territory.city">({{territory.city}})</span></a>
+            </li>
+        </ul>
 
-            <!-- PANEL streets -->
-            <div class="panel" id="streets">
-                <ul>
-                    <li ng:repeat="street in streets">
-                        <a href="#notes" onclick="$.ui.loadContent('notes')" ng:click="[ setCurStreet(street), refreshAddresses($parent.addressFilter)]">{{street.name}}</a>
-                    </li>
-                </ul>
-            </div>
+        <!-- PANEL streets -->
+        <ul class="panel" id="streets" title="{{curTerritory.ident}} {{curTerritory.city}}">
+                <li ng:repeat="street in streets">
+                    <a href="#notes"  ng:click="[ setCurStreet(street), refreshAddresses($parent.addressFilter)]">{{street.name}}</a>
+                </li>
+        </ul>
 
-            <!-- PANEL notes -->
-            <div id="notes" class="panel">
-                <ul class="listview">
-                    <li ng:repeat="address in addresses">
-                        <a href="#visits"  ng:click="setCurAddress(address)">
-                            <h3>#{{address.housenumber|number}}<span ng:show="address.info"> {{address.info}}</span>, {{address.name}} <span ng:show="address.gender != 'na'">({{address.gender|i18n}})</span></h3>
-                            <p ng:show="address.the_visits[0].date">
-                                {{address.the_visits[0].date|moment}}:
-                                <span ng:hide="address.the_visits[0].type == 'normal'"> {{address.the_visits[0].type|i18n}}</span>
-                                <span ng:show="address.the_visits[0].note"> {{address.the_visits[0].note}}</span>
-                            </p>
-                        </a>
-                        <a href="#edit-visit" ngm:click="[ setCurAddress(address), resetCurVisit() ]">{{'Add visit'|i18n}}</a>
-                    </li>
-                </ul>
+        <!-- PANEL notes -->
+        <ul id="notes" class="panel listview-splitbtn" title="{{curStreet.name}}">
+            <li ng:repeat="address in addresses">
+                <a href="#visits"  ng:click="setCurAddress(address)">
+                    <span class="icon home">#{{address.housenumber|number}}<span ng:show="address.info"> {{address.info}}</span>, {{address.name}} <span ng:show="address.gender != 'na'" class="icon gender {{address.gender}}"></span></span>
+                    <p ng:show="address.the_visits[0].date">
+                        {{address.the_visits[0].date|moment}}:
+                        <span ng:hide="address.the_visits[0].type == 'normal'"> {{address.the_visits[0].type|i18n}}</span>
+                        <span ng:show="address.the_visits[0].note"> {{address.the_visits[0].note}}</span>
+                    </p>
+                </a>
+                <a href="#edit-visit" class="icon comment-add" ngm:click="[ setCurAddress(address), resetCurVisit() ]">{{'Add visit'|i18n}}</a>
+            </li>
+        </ul>
+
+
+        <!-- DIALOG addressFilter -->
+        <form id="search" title="Search" class="dialog" name="formname" action="" method="GET">
+           <div class="toolbar">
+              <h1>{{'Filter'|i18n}}</h1>
+              <a class="button leftButton" type="cancel">Cancel</a>
+              <a class="button blueButton" href="javascript:formname.submit()">Search</a>
+           </div>
+           <fieldset>
+              <div class="row">
+                 <label for="keyword">Search:</label>
+              <input type="text" name="q" id="keyword" placeholder="Type your keywords">
+              </div>
+           </fieldset>
+        </form>
+
+        <div id="footer">
+            <a href=#" class="button">Bla</a>
         </div>
-
-        <div id="navbar">
-            <div class="horzRule"></div>
-            <a href="#territories" class="icon location">{{'Territories list'|i18n}}</a>
-            <a href="#streets" class="icon lamp">{{'Streets'|i18n}}</a>
-        </div>
-
-    </div>
 </body>
 </html>
