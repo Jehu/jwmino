@@ -29,8 +29,6 @@
             <h1 id="pageTitle"></h1>
             <a id="backButton" class="button" href="#"></a>
             <ng:include src="tbButtons"></ng:include>
-            <!--a href="#territories" cla-ss="icon location">{{'Territories list'|i18n}}</a>
-            <a href="#streets" class="icon lamp">{{'Streets'|i18n}}</a-->
         </div>
 
         <!-- PANEL territories -->
@@ -63,23 +61,38 @@
         </ul>
 
 
-        <!-- DIALOG addressFilter -->
-        <form id="search" title="Search" class="dialog" name="formname" action="" method="GET">
-           <div class="toolbar">
-              <h1>{{'Filter'|i18n}}</h1>
-              <a class="button leftButton" type="cancel">Cancel</a>
-              <a class="button blueButton" href="javascript:formname.submit()">Search</a>
-           </div>
-           <fieldset>
-              <div class="row">
-                 <label for="keyword">Search:</label>
-              <input type="text" name="q" id="keyword" placeholder="Type your keywords">
-              </div>
-           </fieldset>
+        <!-- PANEL addressFilter -->
+        <form id="address-filter" title="{{'Filter'|i18n}}" class="panel">
+            <fieldset>
+                <div class="row">
+                    <label for="filter-all">{{'All'|i18n}}</label>
+                    <input type="radio" id="filter-all" name="addressFilter" value="all" ng:click="refreshAddresses(null)" onclick="iui.showPageById('notes')" />
+                </div>
+
+                <div class="row">
+                    <label for="filter-nh">{{'NH'|i18n}}</label>
+                    <input type="radio" id="filter-nh" name="addressFilter" value="nh" ng:click="refreshAddresses('nh')" onclick="iui.showPageById('notes')" />
+                </div>
+
+                <div class="row">
+                    <label for="filter-rv">{{'Return visit'|i18n}}</label>
+                    <input type="radio" id="filter-rv" name="addressFilter" value="return_visit" ng:click="refreshAddresses('return_visit')" onclick="iui.showPageById('notes')" />
+                </div>
+
+                <div class="row">
+                    <label for="filter-study">{{'Study'|i18n}}</label>
+                    <input type="radio" id="filter-study" name="addressFilter" value="study" ng:click="refreshAddresses('study')" onclick="iui.showPageById('notes')" />
+                </div>
+
+                <div class="row">
+                    <label for="filter-foreigner">{{'Foreign lang.'|i18n}}</label>
+                    <input type="radio" id="filter-foreigner" name="addressFilter" value="foreign_language" ng:click="refreshAddresses('foreign_language')" onclick="iui.showPageById('notes')" />
+                </div>
+            </fieldset>
         </form>
 
-        <div id="footer">
+        <!--div id="footer">
             <a href=#" class="button">Bla</a>
-        </div>
+        </div-->
 </body>
 </html>

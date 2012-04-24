@@ -19,11 +19,15 @@ TODO
     - language
     - db export / db import
 */
-function JwminoController(persistencejs) {
-    console.log("init");
-    
-    console.log(window);
+function JwminoController(persistencejs, $location, $route) {
     self = this;
+
+    $route.onChange(function() {
+        console.log($location.hashPath);
+        self.tbButtons = './partials/tbbtn' + $location.hashPath + '.html';
+    });
+
+
     self.appConfig = {
         lang: 'de'
     };
@@ -59,8 +63,6 @@ function JwminoController(persistencejs) {
     self.streets = [];
     self.addresses = [{ the_visits : [] }];
     self.visits = [];
-
-    self.tbButtons = './partials/tbbtn_addresses.html';
 
     // currently selected values
     self.curTerritory = {};
@@ -102,7 +104,7 @@ function JwminoController(persistencejs) {
     self.flashmessage_navigate = '';
     self.addressFilter = 'all';
 }
-JwminoController.$inject = ['persistencejs'];
+JwminoController.$inject = ['persistencejs','$location','$route'];
 
 JwminoController.prototype = {
     saveAddressAndVisit: function() {
