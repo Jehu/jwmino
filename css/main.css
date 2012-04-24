@@ -1,6 +1,39 @@
-.ui-field-contain {
+#header > h1 {
+    /*position: relative !important;*/
+    left: 0px !important;
+    z-index: auto !important;
+}
+.panel {
+    background: rgba(160, 159, 153, 1);    
+}
+ul.listview > li {
+    display: block;
+    width: 100%;
+    list-style: none;
+    background: #39424B;
+    position: relative;
+}
+ul.listview > li,
+ul.listview > li a {
+    height: auto;
+    overflow: hidden;
+}
+ul.listview > li > a:after {
+    content: ""; 
+}
+ul.listview > li a:nth-child(1n+2) {
+    border: 1px solid red;
+    position: absolute;
+    width: 40px;
+    right: 0;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    z-index: 2;
+}
+/*.ui-field-contain {
     padding: 1.5em 0;
     margin: 0;
     border-bottom-width: 0;
     overflow: visible;
-}
+}*/

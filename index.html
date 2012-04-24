@@ -2,99 +2,95 @@
 <head>
     <title>JWMiNo - Ministry notes</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="stylesheet" href="css/icons.css" />
+    <link rel="stylesheet" href="css/jq.ui.css" />
     <link rel="stylesheet" href="css/main.css" />
-    <script src="lib/jq.ui.min.js" type="application/javascript"></script>
     <script src="i18n/de_DE.js" type="application/javascript"></script>
     <script src="lib/moment.min.js" type="application/javascript"></script>
     <script src="lib/sprintf-0.7-beta1.js" type="application/javascript"></script>
-    <script src="lib/angular-0.9.19.min.js" type="application/javascript"></script>
+    <script src="lib/angular-0.9.19.min.js" type="application/javascript"  ng:autobind></script>
     <script src="js/filter.i18n.js" type="application/javascript"></script>
     <script src="js/filter.moment.js" type="application/javascript"></script>
-    <!--script src="phonegap.js" type="application/javascript"></script-->
     <script src="lib/persistence.js" type="application/javascript"></script>
     <script src="lib/persistence.store.sql.js" type="application/javascript"></script>
     <script src="lib/persistence.store.websql.js" type="application/javascript"></script>
     <script src="js/model.js" type="application/javascript"></script>
     <script src="js/app.js" type="application/javascript"></script>
+    <script src="lib/jq.ui.min.js" type="application/javascript"></script>
+
+
+    <script>
+        if (!((window.DocumentTouch && document instanceof DocumentTouch) || 'ontouchstart' in window)) {
+            var script = document.createElement("script");
+            script.src = "lib/touch.js";
+            var tag = $("head").append(script);
+            $.os.android = true; //let's make it run like an android device
+            $.os.desktop = true;
+        }
+    </script>
+    <script type="text/javascript">
+        //var myController = angular.element($('body')).scope();
+         
+        var webRoot = "./";
+        //$.ui.autoLaunch = false; //By default, it is set to true and you're app will run right away.  We set it to false to show a splashscreen
+        /* This function runs when the body is loaded.*/
+        var init = function () {
+                $.ui.showBackbutton = false;
+                $.ui.backButtonText = "Back"; // We override the back button text to always say "Back"
+                //window.setTimeout(function () {
+                //    $.ui.launch(); 
+                //}, 1500); //We wait 1.5 seconds to call $.ui.launch after DOMContentLoaded fires
+        };
+        document.addEventListener("DOMContentLoaded", init, false);
+        $.ui.ready(function () {
+            //This function will get executed when $.ui.launch has completed
+        });
+ 
+        
+        /* This code is used for appMobi native apps */
+        var onDeviceReady = function () {
+                AppMobi.device.setRotateOrientation("portrait");
+                AppMobi.device.setAutoRotate(false);
+                webRoot = AppMobi.webRoot + "/";
+                //hide splash screen
+                AppMobi.device.hideSplashScreen();
+ 
+        };
+        document.addEventListener("appMobi.device.ready", onDeviceReady, false);
+    </script>
 </head>
 <body ng:controller="JwminoController">
-    <div data-role="page" id="territories" data-iscroll="enable" ngm:event="{pagebeforeshow: 'refreshTerritories()'}">
-        <div data-role="header">
-            <h1>{{'Territories'|i18n}}</h1>
+    <div id="jQUi">
+
+        <div id="header">
         </div>
-        <div data-role="content">
-            <div data-iscroll="scroller">
-                <ul data-role="listview">
+
+        <div id="content">
+            <!-- PANEL territories -->
+            <div title="{{'Territories'|i18n}}" class="panel" id="territories" selected="true">
+                <ul>
                     <li ng:repeat="territory in territories">
-                        <a href="#streets" ngm:click="setCurTerritory(territory)">{{territory.ident}} <span ng:show="territory.city">({{territory.city}})</span></a>
+                        <a href="#streets" onclick="$.ui.loadContent('streets')" ng:click="[setCurTerritory(territory), refreshStreets()]">{{territory.ident}} <span ng:show="territory.city">({{territory.city}})</span></a>
                     </li>
                 </ul>
             </div>
-        </div>
-        <div data-role="footer" data-position="fixed">
-            <div data-role="navbar">
+
+            <!-- PANEL streets -->
+            <div class="panel" id="streets">
                 <ul>
-                    <li><a href="#settings">{{'About'|i18n}}</a></li>
-                    <li><a href="#edit-territory" ngm:click="resetCurTerritory()">{{'Add Territory'|i18n}}</a></li>
-            </div>
-        </div>
-    </div>
-
-
-    <div data-role="page" id="streets" data-iscroll="enable" ngm:event="{pagebeforeshow: 'refreshStreets()'}" data-add-back-btn="false">
-        <div data-role="header">
-            <a href="#territories" data-icon="arrow-l" class="ui-btn-left">{{'Back'|i18n}}</a>
-            <h1>{{curTerritory.ident}} <span ng:show="curTerritory.city">{{curTerritory.city}}</span></h1>
-            <a href="#edit-territory" data-icon="gear" class="ui-btn-right">{{'Edit'|i18n}}</a>
-        </div>
-        <div data-role="content">
-            <div data-iscroll="scroller">
-                <ul data-role="listview">
                     <li ng:repeat="street in streets">
-                        <a href="#notes" ngm:click="setCurStreet(street)">{{street.name}}</a>
+                        <a href="#notes" onclick="$.ui.loadContent('notes')" ng:click="[ setCurStreet(street), refreshAddresses($parent.addressFilter)]">{{street.name}}</a>
                     </li>
                 </ul>
             </div>
-        </div>
-        <div data-role="footer" data-position="fixed">
-            <div data-role="navbar">
-                <ul>
-                    <li><a href="#territories">{{'Territories list'|i18n}}</a></li>
-                    <li><a href="#edit-street" ngm:click="resetCurStreet()">{{'Add Street'|i18n}}</a></li>
-            </div>
-        </div>
-    </div>
 
-    <div data-role="page" id="notes" data-iscroll="enable" ngm:event="{pagebeforeshow: 'refreshAddresses($parent.addressFilter)'}" data-add-back-btn="false">
-        <div data-role="header">
-            <a href="#streets" data-icon="arrow-l" class="ui-btn-left">{{'Back'|i18n}}</a>
-            <h1>{{curStreet.name}}</h1>
-            <a href="#edit-street" data-icon="gear" class="ui-btn-right">{{'Edit'|i18n}}</a>
-
-            <!--label style="display: block; float: left; padding: 10px 10px 0 10px;">{{'Filter'|i18n}}</label-->
-            <fieldset data-role="controlgroup" data-type="horizontal" style="padding: 10px 0 0 10px; margin: 0 0 5px 0;">
-                <input type="radio" id="filter-all" name="addressFilter" value="all" ngm:click="refreshAddresses(null)" />
-                <label for="filter-all">{{'All'|i18n}}</label>
-
-                <input type="radio" id="filter-nh" name="addressFilter" value="nh" ngm:click="refreshAddresses('nh')" />
-                <label for="filter-nh">{{'NH'|i18n}}</label>
-
-                <input type="radio" id="filter-rv" name="addressFilter" value="return_visit" ngm:click="refreshAddresses('return_visit')" />
-                <label for="filter-rv">{{'Return visit'|i18n}}</label>
-
-                <input type="radio" id="filter-study" name="addressFilter" value="study" ngm:click="refreshAddresses('study')" />
-                <label for="filter-study">{{'Study'|i18n}}</label>
-
-                <input type="radio" id="filter-foreigner" name="addressFilter" value="foreign_language" ngm:click="refreshAddresses('foreign_language')" />
-                <label for="filter-foreigner">{{'Foreign lang.'|i18n}}</label>
-            </fieldset>
-        </div>
-        <div data-role="content">
-            <div data-iscroll="scroller">
-                <ul data-role="listview" data-split-icon="plus">
+            <!-- PANEL notes -->
+            <div id="notes" class="panel">
+                <ul class="listview">
                     <li ng:repeat="address in addresses">
-                        <a href="#visits"  ngm:click="setCurAddress(address)">
+                        <a href="#visits"  ng:click="setCurAddress(address)">
                             <h3>#{{address.housenumber|number}}<span ng:show="address.info"> {{address.info}}</span>, {{address.name}} <span ng:show="address.gender != 'na'">({{address.gender|i18n}})</span></h3>
                             <p ng:show="address.the_visits[0].date">
                                 {{address.the_visits[0].date|moment}}:
@@ -105,325 +101,14 @@
                         <a href="#edit-visit" ngm:click="[ setCurAddress(address), resetCurVisit() ]">{{'Add visit'|i18n}}</a>
                     </li>
                 </ul>
-            </div>
         </div>
-        <div data-role="footer" data-position="fixed" data-transition="none">
-            <div data-role="navbar" data-transition="none">
-                <ul>
-                    <li><a href="#territories" data-role="button">{{'Territories'|i18n}}</a></li>
-                    <li><a href="#streets" data-role="button">{{'Streets'|i18n}}</a></li>
-                    <li><a href="#edit-note" data-role="button" ngm:click="[ resetCurVisit(), resetCurAddress() ]">{{'Add Note'|i18n}}</a></li>
-                </ul>
-            </div>
+
+        <div id="navbar">
+            <div class="horzRule"></div>
+            <a href="#territories" class="icon location">{{'Territories list'|i18n}}</a>
+            <a href="#streets" class="icon lamp">{{'Streets'|i18n}}</a>
         </div>
+
     </div>
-
-
-    <div data-role="page" id="visits" data-iscroll="enable" data-add-back-btn="false" ngm:event="{pagebeforeshow: 'refreshVisits()'}" >
-        <div data-role="header">
-            <a href="#notes" data-icon="arrow-l" class="ui-btn-left">{{'Back'|i18n}}</a>
-            <h1>#{{curAddress.housenumber|number}}<span ng:show="curAddress.info"> {{curAddress.info}}</span>, {{curAddress.name}} ({{curAddress.gender|i18n}})</h1>
-            <a href="#edit-address" data-icon="gear" class="ui-btn-right">{{'Edit'|i18n}}</a>
-        </div>
-        <div data-role="content">
-            <div data-iscroll="scroller">
-                <ul data-role="listview" data-split-icon="plus">
-                    <li ng:repeat="visit in visits">
-                        <a href="#edit-visit" ngm:click="setCurVisit(visit)">
-                            <h3>{{visit.date|moment}}<span ng:hide="visit.type == 'normal'">, {{visit.type|i18n}}</span></h3>
-                            <p><span ng:show="visit.note">{{visit.note}}</span></p>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div data-role="footer" data-position="fixed">
-            <div data-role="navbar">
-                <ul>
-                    <li><a href="#streets" data-role="button">{{'Streets'|i18n}}</a></li>
-                    <li><a href="#notes" data-role="button">{{'Notes'|i18n}}</a></li>
-                    <li><a href="#edit-visit" data-role="button" ngm:click="resetCurVisit()">{{'Add Visit'|i18n}}</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <div data-role="page" id="edit-note" data-iscroll="disable">
-        <div data-role="header">
-            <a href="#notes" data-icon="arrow-l" class="ui-btn-left">{{'Back'|i18n}}</a>
-            <h1>{{'Create Note'|i18n}}</h1>
-        </div>
-        <div data-role="content">
-            <div data-iscroll="scroller">
-                <form ng:submit="saveAddressAndVisit()" data-ajax="false">
-                    <div data-role="fieldcontain" class="ui-hide-label" style="overflow:hidden; padding-bottom: 0; border: 0 none;">
-                        <div style="width: 20%; float:left;">
-                            <label for="number">{{'Number'|i18n}}</label>
-                            <input type="text" name="curAddress.housenumber" id="number" placeholder="{{'No.'|i18n}}" ng:format="number">
-                        </div>
-                        <div style="width: 80%; float:left;">
-                            <label for="name">{{'Name'|i18n}}</label>
-                            <input type="text" name="curAddress.name" id="name" placeholder="{{'Name'|i18n}}" />
-                        </div>
-                        <label for="addrinfo">{{'Address info'|i18n}}</label>
-                        <input type="text" name="curAddress.info" id="addrinfo" placeholder="{{'Additional address info'|i18n}}" value="" />
-                    </div>
-                    <div data-role="fieldcontain" style="padding-top: 0.4em; padding-bottom: 0.5em; border: 0 none;">
-                        <fieldset data-role="controlgroup" data-type="horizontal" style="margin: 0;">
-                            <select name="curAddress.gender">
-                                <option value="na">{{'Gender?'|i18n}}</option>
-                                <option value="female">{{'Female'|i18n}}</option>
-                                <option value="male">{{'Male'|i18n}}</option>
-                            </select>
-                            <select name="curAddress.age">
-                                <option value="na">{{'Age?'|i18n}}</option>
-                                <option>5</option>
-                                <option>10</option>
-                                <option>15</option>
-                                <option>20</option>
-                                <option>25</option>
-                                <option>30</option>
-                                <option>35</option>
-                                <option>40</option>
-                                <option>45</option>
-                                <option>50</option>
-                                <option>55</option>
-                                <option>60</option>
-                                <option>65</option>
-                                <option>70</option>
-                                <option>75</option>
-                                <option>80</option>
-                                <option>85</option>
-                                <option>90</option>
-                                <option>95</option>
-                                <option>100</option>
-                            </select>
-                            <select name="curVisit.type">
-                                <option value="nh">{{'NH'|i18n}}</option>
-                                <option value="normal">{{'Normal visit'|i18n}}</option>
-                                <option value="not_interested">{{'Not interested'|i18n}}</option>
-                                <option value="ra">{{'Re-audition'|i18n}}</option>
-                                <option value="return_visit">{{'Return visit'|i18n}}</option>
-                                <option value="foreign_language">{{'Foreign lang.'|i18n}}</option>
-                            </select>
-                        </fieldset>
-                    </div>
-                    <div data-role="fieldcontain" class="ui-hide-label" style="padding-top: 0; border: 0 none;">
-                        <label for="note">{{'Note'|i18n}}</label>
-                        <textarea name="curVisit.note" id="note" placeholder="{{'Note'|i18n}}"></textarea>
-                    </div>
-                    <input type="submit"  value="{{'Save'|i18n}}" />
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div data-role="page" id="edit-visit" data-iscroll="disable">
-        <div data-role="header">
-            <a href="#visits" data-icon="arrow-l" class="ui-btn-left">{{'Back'|i18n}}</a>
-            <h1>{{'Edit Visit'|i18n}} #{{curAddress.housenumber}}, {{curAddress.name}}</h1>
-            <a href="#" ngm:click="deleteVisit()" data-icon="delete" class="ui-btn-right">{{'Delete'|i18n}}</a>
-        </div>
-        <div data-role="content">
-            <div data-iscroll="scroller">
-                <form ng:submit="saveVisit()" data-ajax="false">
-                    <div data-role="fieldcontain" style="padding-top: 0.4em; padding-bottom: 0.5em; border: 0 none;">
-                        <fieldset data-role="controlgroup" data-type="horizontal" style="margin: 0;">
-                            <select name="curVisit.type">
-                                <option value="nh">{{'NH'|i18n}}</option>
-                                <option value="normal">{{'Normal visit'|i18n}}</option>
-                                <option value="ra">{{'Re-audition'|i18n}}</option>
-                                <option value="not_interested">{{'Not interested'|i18n}}</option>
-                                <option value="return_visit">{{'Return visit'|i18n}}</option>
-                                <option value="foreign_language">{{'Foreign lang.'|i18n}}</option>
-                            </select>
-                        </fieldset>
-                    </div>
-                    <div data-role="fieldcontain" class="ui-hide-label" style="padding-top: 0; border: 0 none;">
-                        <label for="note">{{'Note'|i18n}}</label>
-                        <textarea name="curVisit.note" id="note" placeholder="{{'Note'|i18n}}"></textarea>
-                    </div>
-                    <input type="submit" value="{{'Save'|i18n}}"/>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div data-role="page" id="edit-address" data-iscroll="disable">
-        <div data-role="header">
-            <a href="#visits" data-icon="arrow-l" class="ui-btn-left">{{'Back'|i18n}}</a>
-            <h1>{{'Edit Address'|i18n}}</h1>
-        </div>
-        <div data-role="content">
-            <div data-iscroll="scroller">
-                <form ng:submit="saveAddress()" data-ajax="false">
-                    <div data-role="fieldcontain" class="ui-hide-label" style="overflow:hidden; padding-bottom: 0; border: 0 none;">
-                        <div style="width: 20%; float:left;">
-                            <label for="number">{{'Number'|i18n}}</label>
-                            <input type="text" name="curAddress.housenumber" id="number" placeholder="{{'No.'|i18n}}" ng:format="number">
-                        </div>
-                        <div style="width: 80%; float:left;">
-                            <label for="name">{{'Note'|i18n}}</label>
-                            <input type="text" name="curAddress.name" id="name" placeholder="{{'Name'|i18n}}" />
-                        </div>
-                        <label for="addrinfo">{{'Address info'|i18n}}</label>
-                        <input type="text" name="curAddress.info" id="addrinfo" placeholder="{{'Additional address info'|i18n}}" value="" />
-                    </div>
-                    <div data-role="fieldcontain" style="padding-top: 0.4em; padding-bottom: 0.5em; border: 0 none;">
-                        <fieldset data-role="controlgroup" data-type="horizontal" style="margin: 0;">
-                            <select name="curAddress.gender">
-                                <option value="na">{{'Gender?'|i18n}}</option>
-                                <option value="female">{{'Female'|i18n}}</option>
-                                <option value="male">{{'Male'|i18n}}</option>
-                            </select>
-                            <select name="curAddress.age">
-                                <option value="na">{{'Age?'|i18n}}</option>
-                                <option>5</option>
-                                <option>10</option>
-                                <option>15</option>
-                                <option>20</option>
-                                <option>25</option>
-                                <option>30</option>
-                                <option>35</option>
-                                <option>40</option>
-                                <option>45</option>
-                                <option>50</option>
-                                <option>55</option>
-                                <option>60</option>
-                                <option>65</option>
-                                <option>70</option>
-                                <option>75</option>
-                                <option>80</option>
-                                <option>85</option>
-                                <option>90</option>
-                                <option>95</option>
-                                <option>100</option>
-                            </select>
-                            <select name="curAddress.type">
-                                <option value="na">{{'n/a'|i18n}}</option>
-                                <option value="return_visit">{{'perm. RV'|i18n}}</option>
-                                <option value="study">{{'Study'|i18n}}</option>
-                                <option value="foreign_language">{{'Foreign lang.'|i18n}}</option>
-                            </select>
-                        </fieldset>
-                    </div>
-                    <input type="submit"  value="{{'Save'|i18n}}" />
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div data-role="page" id="edit-territory" data-iscroll="disable">
-        <div data-role="header">
-            <a href="#streets" data-icon="arrow-l" class="ui-btn-left">{{'Back'|i18n}}</a>
-            <h1 ng:show="curTerritory.id">{{'Edit Territory'|i18n}}</h1>
-            <h1 ng:hide="curTerritory.id">{{'Create Territory'|i18n}}</h1>
-        </div>
-        <div data-role="content">
-            <div data-iscroll="scroller">
-                <form ng:submit="saveTerritory()" data-ajax="false">
-                    <div data-role="fieldcontain" class="ui-hide-label">
-                        <label for="ident">{{'Ident'|i18n}}</label>
-                        <input type="text" id="ident" name="curTerritory.ident" placeholder="{{'Ident'|i18n}}" />
-                        <label for="city">{{'City'|i18n}}</label>
-                        <input type="text" id="city" name="curTerritory.city" placeholder="{{'City'|i18n}}" />
-                    </div>
-                    <input type="submit" data-theme="b" value="{{'Save'|i18n}}" />
-                    <span ng:hide="!curTerritory.id"><input type="button" data-icon="alert" data-theme="a" value="{{'Delete'|i18n}}" ngm:click="deleteTerritory()" /></span>
-                </form>
-            </div>
-        </div>
-        <div data-role="footer" data-position="fixed">
-            <div data-role="navbar">
-                <ul>
-                    <li><a href="#territories">{{'Territories list'|i18n}}</a></li>
-            </div>
-        </div>
-    </div>
-
-    <div data-role="page" id="edit-street" data-iscroll="disable">
-        <div data-role="header">
-            <a href="#notes" data-icon="arrow-l" class="ui-btn-left">{{'Back'|i18n}}</a>
-            <h1 ng:show="curStreet.id">{{'Edit Street'|i18n}}</h1>
-            <h1 ng:hide="curStreet.id">{{'Create Street'|i18n}}</h1>
-        </div>
-        <div data-role="content">
-            <div data-iscroll="scroller">
-                <form ng:submit="saveStreet()" data-ajax="false">
-                    <div data-role="fieldcontain" class="ui-hide-label">
-                        <label for="territory">{{'Territory'|i18n}}</label>
-                        <select id="territory" name="curTerritory" ng:options="t.ident for t in territories"></select>
-                        <label for="name">{{'Name'|i18n}}</label>
-                        <input type="text" id="name" name="curStreet.name" placeholder="{{'Street name'|i18n}}">
-                    </div>
-                    <input type="submit" value="{{'Save'|i18n}}">
-                </form>
-            </div>
-        </div>
-        <div data-role="footer" data-position="fixed">
-            <div data-role="navbar">
-                <ul>
-                    <li><a href="#streets">{{'Streets list'|i18n}}</a></li>
-            </div>
-        </div>
-    </div>
-
-    <div data-role="page" id="settings" data-iscroll="disable">
-        <div data-role="header">
-            <h1>{{'About'|i18n}}</h1>
-            <a href="#territories" data-icon="home">{{'Territories'|i18n}}</a>
-        </div>
-        <div data-role="content">
-            <div data-iscroll="scroller">
-                <div data-role="collapsible-set">
-                    <div data-role="collapsible" data-collapsed="false" data-content-theme="c">
-                        <h3>Danke</h3>
-                        <p>Danke, dass du beim Test der App JWMiNo hilfst.<br />
-                        Bitte sende mir deine gefundenen Fehler, sowie deine Verbesserungsvorschläge, Ideen und Wünsche
-                        per Mail an <a href="mailto:marco.michely@gmail.com">marco.michely@gmail.com</a>.</p>
-                        <p>Wenn du einen Fehler meldest, so sende mir bitte folgende Infos:</p>
-                        <ul>
-                            <li>Angaben zum verwendeten Gerät (Hersteller, Modell)</li>
-                            <li>Android-Version (findest du unter Einstellungen / Telefoninfo / Android-Version)</li>
-                            <li>Wie kann man den Fehler reproduzieren</li>
-                            <li>Wenn möglich: Screenshot oder Foto auf dem der Fehler zu erkennen ist</li>
-                        </ul>
-                    </div>
-                    <div data-role="collapsible" data-content-theme="c">
-                        <h3>Über diese App</h3>
-                        <p>JWMiNo steht für "Jehovah's Witnesses Ministry Notes".</p>
-                        <p>Es gib für Android schon Apps zum Erfassen von Haus-zu-Haus Notizen. Ich habe sie alle ausprobiert. Nicht eine einzige war einfach genug bedienbar um damit flüssig arbeiten zu können.</p>
-                        <p>Deshalb habe ich JWMiNo entwickelt. Es gibt keine unnötigen Funktionen (z. B. keine Stoppuhr zum Erfassen, wie lange man im Dienst war). JWMiNo konzentriert sich in erster Linie auf die Kernaufgabe: Haus-zu-Haus Notizen erfassen und verwalten.</p>
-                        <p>Es gibt schon Ideen, welche Funktionen noch sehr nützlich wären, zum Beispiel das Erfassen der Literaturabgabe. Oder einen Im- und Export von Notizen. Doch zuerst müssen die Kernfunktionen einmal perfektioniert werden. Der Fokus liegt vor allem auch auf der einfachen Benutzbarkeit.</p>
-                        <p>JWMiNo wird mehrsprachig sein. Im Ersten Schritt wird die App in deutsch und englisch zur Verfügung stehen. Diese Testversion ist jedoch noch fest auf deutsch eingestellt.</p>
-                        <p>JWMiNo wird kostenfrei bleiben. Vielleicht gibt es später <em>zusätzlich</em> eine kostenpflichtige Version mit Power-Features. Allgemeinen Pionieren wird auch die eigentlich kostenpflichtige Version kostenfrei zur Verfügung stehen.</p>
-                    </div>
-                    <div data-role="collapsible" data-content-theme="c">
-                        <h3>Achtung, Testversion!</h3>
-                        <p>Diese App ist <strong>derzeit im Test-Stadium</strong>. Wenn du sie verwendest, rechne bitte damit, dass die Daten verloren gehen können.</p>
-                        <p>Es ist nicht gewährleistet, dass die Daten nach einem Update auf spätere Versionen noch gelesen werden können.</p>
-                    </div>
-                    <div data-role="collapsible" data-theme="a" data-content-theme="c">
-                        <h3>Zurücksetzen</h3>
-                        <p>Du kannst alle Daten in dieser App löschen (Gebiete, Straßen, Notizen), wenn du diesen Knopf betätigst.<br /><strong>Es erfolgt keine Rückfrage!</strong>
-                        <a href="#" data-role="button" ngm:click="[ $parent.appReset(), $navigate('#territories') ]">{{'Reset application data'|i18n}}</a>
-                        <a href="#" data-role="button" ngm:click="[ $parent.exportData() ]">{{'Export data'|i18n}}</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div data-role="dialog" id="message">
-        <div data-role="header">
-            <h1>Hey!</h1>
-        </div>
-        <div data-role="content">
-            <p>{{flashmessage}}</p>
-            <a ng:show="$parent.flashmessage_navigate" href="#{{flashmessage_navigate}}" data-role="button">{{'Ok'|i18n}}</a>
-            <a ng:hide="$parent.flashmessage_navigate" href="#" data-role="button" data-rel="back">{{'Ok'|i18n}}</a>
-        </div>
-    </div>
-
 </body>
 </html>

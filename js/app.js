@@ -19,14 +19,20 @@ TODO
     - language
     - db export / db import
 */
-function JwminoController(persistencejs, $navigate) {
+function JwminoController(persistencejs) {
+    console.log("init");
+    
+    console.log(window);
     self = this;
     self.appConfig = {
         lang: 'de'
     };
 
-    self.navigate = $navigate;
+    //self.navigate = $navigate;
     self.db = persistencejs;
+
+    // initial load of data
+    self.refreshTerritories();
 
     //self.saveConfig = function(config) {
     //    self.db.setAppConfig(config, function(config) {
@@ -56,7 +62,17 @@ function JwminoController(persistencejs, $navigate) {
 
     // currently selected values
     self.curTerritory = {};
+    self.$watch('curTerritory', function() {
+        if(self.curTerritory.ident !== undefined) {
+            $.ui.setTitle(self.curTerritory.ident + ' ' + self.curTerritory.city);
+        }
+    });
     self.curStreet = {};
+    self.$watch('curStreet', function() {
+        if(self.curStreet.name !== undefined) {
+            $.ui.setTitle(self.curStreet.name);
+        }
+    });
     self.curAddress = {
         gender: 'na',
         type: 'na',
@@ -94,19 +110,19 @@ function JwminoController(persistencejs, $navigate) {
     self.flashmessage_navigate = '';
     self.addressFilter = 'all';
 }
-JwminoController.$inject = ['persistencejs','$navigate'];
+JwminoController.$inject = ['persistencejs'];
 
 JwminoController.prototype = {
     saveAddressAndVisit: function() {
         this.db.createAddressAndVisit(self.curAddress ,self.curVisit, self.curStreet, function(success) {
             if(!success) {
                 self.flashmessage = 'Note not saved. Empty form?';
-                self.navigate('message');
+                // FIXME self.navigate('message');
             }
             else {
                 self.resetCurAddress();
                 self.resetCurVisit();
-                self.navigate('notes');
+                // FIXME self.navigate('notes');
             }
         });
     },
@@ -116,11 +132,11 @@ JwminoController.prototype = {
             self.db.updateVisit(self.curVisit, function(success) {
                 if(!success) {
                     self.flashmessage = 'Visit not saved. Empty form?';
-                    self.navigate('message');
+                    // FIXME self.navigate('message');
                 }
                 else {
                     self.resetCurVisit();
-                    self.navigate('visits');
+                    // FIXME self.navigate('visits');
                 }
             });
         }
@@ -128,11 +144,11 @@ JwminoController.prototype = {
             self.db.createVisit(self.curVisit, self.curAddress, function(success) {
                 if(!success) {
                     self.flashmessage = 'Visit not saved. Empty form?';
-                    self.navigate('message');
+                    // FIXME self.navigate('message');
                 }
                 else {
                     self.curVisit = {};
-                    self.navigate('notes');
+                    // FIXME self.navigate('notes');
                 }
             });
         }
@@ -143,11 +159,11 @@ JwminoController.prototype = {
             self.db.updateTerritory(self.curTerritory, function(success) {
                 if(!success) {
                     self.flashmessage = 'Not saved, empty form?';
-                    self.navigate('message');
+                    // FIXME self.navigate('message');
                 }
                 else {
                     self.resetCurTerritory();
-                    self.navigate('territories');
+                    // FIXME self.navigate('territories');
                 }
             });
         }
@@ -156,11 +172,11 @@ JwminoController.prototype = {
                 if(!success)
                 {
                     self.flashmessage = 'Territory not saved. Empty form?';
-                    self.navigate('message');
+                    // FIXME self.navigate('message');
                 }
                 else {
                     self.resetCurTerritory();
-                    self.navigate('territories');
+                    // FIXME self.navigate('territories');
                 }
             });
         }
@@ -171,11 +187,11 @@ JwminoController.prototype = {
             self.db.updateStreet(self.curStreet, function(success) {
                 if(!success) {
                     self.flashmessage = 'Not saved, empty form?';
-                    self.navigate('message');
+                    // FIXME self.navigate('message');
                 }
                 else {
                     self.curStreet = {};
-                    self.navigate('streets');
+                    // FIXME self.navigate('streets');
                 }
             });
         }
@@ -183,11 +199,11 @@ JwminoController.prototype = {
             this.db.createStreet(self.curStreet, self.curTerritory, function(success) {
                 if(!success) {
                     self.flashmessage = 'Not saved, empty form?';
-                    self.navigate('message');
+                    // FIXME self.navigate('message');
                 }
                 else {
                     self.curStreet = {};
-                    self.navigate('streets');
+                    // FIXME self.navigate('streets');
                 }
             });
         }
@@ -198,19 +214,20 @@ JwminoController.prototype = {
             self.db.updateAddress(self.curAddress, function(success) {
                 if(!success) {
                     self.flashmessage = 'Not saved, empty form?';
-                    self.navigate('message');
+                    // FIXME self.navigate('message');
                 }
                 else {
-                    self.navigate('visits');
+                    // FIXME self.navigate('visits');
                 }
             });
         }
         else {
-            self.navigate('visits');
+            // FIXME self.navigate('visits');
         }
     },
 
     refreshTerritories: function() {
+        console.log('refreshTerritories');
         self.territories = [];
         self.db.getTerritories(function(results) {
             self.territories = results;
@@ -250,7 +267,7 @@ JwminoController.prototype = {
     deleteTerritory: function() {
         // FIXME
         self.flashmessage = 'Diese Funktion ist noch nicht verfügbar. :-(';
-        self.navigate('message');
+        // FIXME self.navigate('message');
     },
 
     deleteVisit: function() {
@@ -261,7 +278,7 @@ JwminoController.prototype = {
             if(success) {
                 self.setVisits();
                 self.flashmessage = angular.filter.i18n('Visit has been deleted.');
-                self.navigate('message');
+                // FIXME self.navigate('message');
                 self.flashmessage_navigate = 'notes';
                 //self.flashmessage_navigate = 'visits';
             }
@@ -270,6 +287,7 @@ JwminoController.prototype = {
 
     setCurTerritory: function(item) {
         self.curTerritory = item;
+        //self.refreshStreets();
     },
 
     setCurStreet: function(item) {
