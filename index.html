@@ -42,10 +42,10 @@
             <li ng:repeat="address in addresses">
                 <a href="#visits" ng:click="[ setCurAddress(address), refreshVisits() ]">
                     <span class="icon" style="background-image: url('./css/{{address.the_visits[0].type || 'dummy'}}.png')">
-                        <span style="display: inline-block; min-width: 55px;">#{{address.housenumber}}</span>
-                        <span ng:show="address.info"> {{address.info}}</span>
+                        <span style="display: inline-block; min-width: 55px;">#{{address.housenumber}}
+                        <span ng:show="address.info"> {{address.info}}</span></span>
                         <span ng:show="address.gender != 'na'" class="icon gender {{address.gender}}"></span>
-                        <span ng:show="address.age" style="font-size: 14px; font-weight: normal;">{{address.age}}</span>
+                        <span ng:show="address.age != 'na'" style="font-size: 14px; font-weight: normal;">{{address.age}}</span>
                         {{address.name}}
                     </span>
                     <p ng:show="address.the_visits[0].date">
@@ -240,12 +240,12 @@
                     <input type="text" name="curAddress.housenumber" id="number" placeholder="{{'No.'|i18n}}" ng:format="number">
                 </div>
                 <div class="row">
-                    <label for="name">{{'Note'|i18n}}</label>
-                    <input type="text" name="curAddress.name" id="name" placeholder="{{'Name'|i18n}}" />
-                </div>
-                <div class="row">
                     <label for="addrinfo">{{'Address info'|i18n}}</label>
                     <input type="text" name="curAddress.info" id="addrinfo" placeholder="{{'Additional address info'|i18n}}" value="" />
+                </div>
+                <div class="row">
+                    <label for="name">{{'Name'|i18n}}</label>
+                    <input type="text" name="curAddress.name" id="name" placeholder="{{'Name'|i18n}}" />
                 </div>
             </fieldset>
             <fieldset>
