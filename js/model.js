@@ -1,5 +1,6 @@
 angular.service('persistencejs', function() {
     persistence.store.websql.config(persistence, 'jwmino', 'Database for JWMiNo', 6 * 1024 * 1024);
+    persistence.debug = false;
 
     /*
      * define model
@@ -21,7 +22,8 @@ angular.service('persistencejs', function() {
         name: "TEXT",
         gender: "TEXT",
         age: "TEXT",
-        type: "TEXT"
+        type: "TEXT",
+        //emotion: "TEXT" // this could shown by an emoticon
     });
     Address.index('housenumber');
 
@@ -36,6 +38,8 @@ angular.service('persistencejs', function() {
         lang: "TEXT"
     });
 
+    // not used yet. this could hold all return visit addresses for an extra list
+    // but perhaps this is not needed, an query could list them as well (perfomance?)
     var ReturnVisitAddress = persistence.define('ReturnVisitAddress', {
         territory: 'TEXT',
         street: 'TEXT',
@@ -51,7 +55,7 @@ angular.service('persistencejs', function() {
     Territory.hasMany('streets', Street, 'territory');
     Street.hasMany('addresses', Address, 'street');
     Address.hasMany('visits', Visit, 'address');
-    ReturnVisitAddress.hasMany('visits', Visit, 'returnvisitaddress');
+    ReturnVisitAddress.hasMany('visits', Visit, 'returnvisitaddress'); // not needed yet
 
     persistence.schemaSync();
 
@@ -62,7 +66,7 @@ angular.service('persistencejs', function() {
         createAddressAndVisit: function(editVisitAddress, editVisitNote, street, cb) {
             // FIXME add validation
             var address = new Address({
-                housenumber: editVisitAddress.housenumber,
+                housenumber: parseInt(editVisitAddress.housenumber),
                 info: editVisitAddress.info,
                 name: editVisitAddress.name,
                 gender: editVisitAddress.gender,
@@ -150,9 +154,25 @@ angular.service('persistencejs', function() {
             }
         },
 
+        /*
+         * Delete specified territory including all dependent data
+         */
         deleteTerritory: function(item, cb) {
-            Territory.remove(item);
-            persistence.flush();
+            // first remova all dependent data
+            item.streets.each(null, function(s) {
+                // remove all streets from this territory
+                Street.all().remove(s);
+                s.addresses.each(null, function(a) {
+                    // remove all addresses from this territory
+                    //Address.all().remove(a); // Not needed - throws an error, but why???
+                    a.visits.each(null, function(v) {
+                        // remove all visits from this territory
+                        Visit.all().remove(v);
+                    });
+                });
+            });
+            // Finally remove territory himself
+            Territory.all().remove(item);
             cb(true);
         },
 

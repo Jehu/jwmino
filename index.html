@@ -5,20 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <link rel="stylesheet" href="lib/iui/iui.css" type="text/css">
-    <!--link rel="stylesheet" href="lib/iui/t/default/default-theme.css" type="text/css"-->
-    <!--link rel="stylesheet" href="lib/iui/ext-sandbox/t/defaulthd/defaulthd-theme.css" type="text/css"-->
-    <!--link rel="stylesheet" href="lib/iui/ext-sandbox/t/webos/webos-theme.css" type="text/css"-->
     <link rel="stylesheet" href="lib/iui/t/ipdc/ipdc-theme.css" type="text/css">
     <link rel="stylesheet" href="css/main.css" type="text/css" />
-    <!--script src="lib/jq.mobi.min.js"></script-->
-    <script src="lib/jquery-1.7.2.min.js"></script>
     <script src="lib/iui/iui.js"></script>
-    <script src="lib/hammer.js"></script>
-    <script src="lib/jquery.hammer.js"></script>
     <script src="i18n/de_DE.js" type="application/javascript"></script>
     <script src="lib/moment.min.js" type="application/javascript"></script>
     <script src="lib/sprintf-0.7-beta1.js" type="application/javascript"></script>
-    <script src="lib/angular-0.9.19.min.js" type="application/javascript"  ng:autobind></script>
+    <script src="lib/angular-0.9.19.min.js" type="application/javascript" ng:autobind></script>
     <script src="js/filter.i18n.js" type="application/javascript"></script>
     <script src="js/filter.moment.js" type="application/javascript"></script>
     <script src="lib/persistence.js" type="application/javascript"></script>
@@ -27,34 +20,8 @@
     <script src="js/model.js" type="application/javascript"></script>
     <script src="js/app.js" type="application/javascript"></script>
 
-    <script type="text/javascript">
-        // Make some things touchable
-        console.log('hammer startet...');
-        $("div").hammer({
-            prevent_default: false,
-            drag_vertical: false
-        })
-        .bind("hold tap doubletap transformstart transform transformend dragstart drag dragend", function(ev) {
-            console.log('Ein Tap Event!!', ev);
-        });
-
-        // Addressleiste verstecken FIXME: nur für Android Browser-Tests...
-        //function hideAddressBar(){
-        //    if(document.documentElement.scrollHeight<window.outerHeight/window.devicePixelRatio) {
-        //        document.documentElement.style.height=(window.outerHeight/window.devicePixelRatio)+'px';
-        //        setTimeout(window.scrollTo(1,1),0);
-        //    }
-        //}
-        //window.addEventListener("load",function(){hideAddressBar();});
-        //window.addEventListener("orientationchange",function(){hideAddressBar();});
-
-
-    </script>
-
 </head>
 <body ng:controller="JwminoController">
-
-<!--body ng:controller="JwminoController" onload="setTimeout( function(){ window.scrollTo(0, 1) }, 0);"-->
 
         <!-- PANEL territories -->
         <ul title="{{'Territories'|i18n}}" class="panel" id="territories" selected="true">
@@ -73,8 +40,14 @@
         <!-- PANEL notes -->
         <ul id="notes" class="panel listview-splitbtn" title="{{curStreet.name}}">
             <li ng:repeat="address in addresses">
-                <a href="#visits"  ng:click="[ setCurAddress(address), refreshVisits() ]">
-                    <span class="icon" style="background-image: url('./css/{{address.the_visits[0].type}}.png')">#{{address.housenumber|number}}<span ng:show="address.info"> {{address.info}}</span>, <span ng:show="address.gender != 'na'" class="icon gender {{address.gender}}"></span> {{address.name}} </span>
+                <a href="#visits" ng:click="[ setCurAddress(address), refreshVisits() ]">
+                    <span class="icon" style="background-image: url('./css/{{address.the_visits[0].type || 'dummy'}}.png')">
+                        <span style="display: inline-block; min-width: 55px;">#{{address.housenumber}}</span>
+                        <span ng:show="address.info"> {{address.info}}</span>
+                        <span ng:show="address.gender != 'na'" class="icon gender {{address.gender}}"></span>
+                        <span ng:show="address.age" style="font-size: 14px; font-weight: normal;">{{address.age}}</span>
+                        {{address.name}}
+                    </span>
                     <p ng:show="address.the_visits[0].date">
                         {{address.the_visits[0].date|moment}}:
                         <span ng:hide="address.the_visits[0].type == 'normal'"> {{address.the_visits[0].type|i18n}}</span>
@@ -222,7 +195,7 @@
         </form>
 
         <!-- PANEL Edit Territory form -->
-        <form id="edit-territory" class="panel">
+        <form id="edit-territory" class="panel" ng:submit="[saveTerritory(), refreshTerritories()]">
             <h3 ng:show="curTerritory.id">{{'Edit Territory'|i18n}}</h3>
             <h3 ng:hide="curTerritory.id">{{'Create Territory'|i18n}}</h3>
             <fieldset>
@@ -234,34 +207,90 @@
                     <label for="city">{{'City'|i18n}}</label>
                     <input type="text" id="city" name="curTerritory.city" placeholder="{{'City'|i18n}}" />
                 </div>
-                <div class="row">
-                    <a class="button" href="#territories" ng:click="[saveTerritory(), refreshTerritories()]">{{'Save'|i18n}}</a>
-                </div>
-                <span ng:hide="!curTerritory.id">
-                    <div class="row">
-                        <a href="#territories" type="button redbutton" value="{{'Delete'|i18n}}" ng:click="[deleteTerritory(), refreshTerritories()]" /></a>
-                    </div>
-                </div>
             </fieldset>
+            <input type="submit" onclick="iui.showPageById('territories')" value="{{'Save'|i18n}}" />
+            <span ng:show="curTerritory.id" >
+                <h3>{{'Delete'|i18n}}</h3>
+                <p>{{'txt.warning.delete'|i18n}}</p>
+                <input type="button" value="{{'Delete'|i18n}}" ng:click="[ deleteTerritory(), refreshTerritories() ]" onclick="iui.showPageById('territories')"/>
+            </span>
+
         </form>
 
         <!-- PANEL Edit Street Form -->
-        <form class="panel" id="edit-street" title="{{'Edit Street'|i18n}}">
+        <form class="panel" id="edit-street" title="{{'Edit Street'|i18n}}" ng:submit="[saveStreet(), refreshStreets()]">
             <h3 ng:show="curStreet.id">{{'Edit Street in %s %s'|i18n:curTerritory.ident:curTerritory.city }}</h3>
             <h3 ng:hide="curStreet.id">{{'Create Street for %s %s'|i18n:[curTerritory.ident,curTerritory.city]}}</h3>
             <fieldset>
                 <div class="row">
-                    <label for="territory">{{'Territory'|i18n}}</label>
-                    <select id="territory" name="curTerritory" ng:options="t.ident for t in territories"></select>
-                </div>
-                <div class="row">
                     <label for="name">{{'Name'|i18n}}</label>
                     <input type="text" id="name" name="curStreet.name" placeholder="{{'Street name'|i18n}}">
                 </div>
+            </fieldset>
+            <input type="submit" onclick="iui.showPageById('streets')" value="{{'Save'|i18n}}" />
+        </form>
+
+
+        <!-- PANEL Edit Address form -->
+        <form id="edit-address" class="panel" ng:submit="[ saveAddress(), refreshAddresses() ]">
+            <h3>{{'Edit Address'|i18n}}</h3>
+            <fieldset>
                 <div class="row">
-                    <a href="#streets" class="button blueButton" ng:click="[saveStreet(), refreshStreets()]">{{'Save'|i18n}}</a>
+                    <label for="number">{{'Number'|i18n}}</label>
+                    <input type="text" name="curAddress.housenumber" id="number" placeholder="{{'No.'|i18n}}" ng:format="number">
+                </div>
+                <div class="row">
+                    <label for="name">{{'Note'|i18n}}</label>
+                    <input type="text" name="curAddress.name" id="name" placeholder="{{'Name'|i18n}}" />
+                </div>
+                <div class="row">
+                    <label for="addrinfo">{{'Address info'|i18n}}</label>
+                    <input type="text" name="curAddress.info" id="addrinfo" placeholder="{{'Additional address info'|i18n}}" value="" />
                 </div>
             </fieldset>
+            <fieldset>
+                <div class="row">
+                    <label>{{'Person'|i18n}}</label>
+                    <span style="display: block; position: absolute; right: 5px; top: 6px; padding: 0; text-align: right; white-space: nowrap;">
+                        <select name="curAddress.gender">
+                            <option value="na">{{'Gender?'|i18n}}</option>
+                            <option value="female">{{'Female'|i18n}}</option>
+                            <option value="male">{{'Male'|i18n}}</option>
+                        </select>
+                        <select name="curAddress.age">
+                            <option value="na">{{'Age?'|i18n}}</option>
+                            <option>5</option>
+                            <option>10</option>
+                            <option>15</option>
+                            <option>20</option>
+                            <option>25</option>
+                            <option>30</option>
+                            <option>35</option>
+                            <option>40</option>
+                            <option>45</option>
+                            <option>50</option>
+                            <option>55</option>
+                            <option>60</option>
+                            <option>65</option>
+                            <option>70</option>
+                            <option>75</option>
+                            <option>80</option>
+                            <option>85</option>
+                            <option>90</option>
+                            <option>95</option>
+                            <option>100</option>
+                        </select>
+                        <select name="curAddress.type">
+                            <option value="na">{{'n/a'|i18n}}</option>
+                            <option value="return_visit">{{'perm. RV'|i18n}}</option>
+                            <option value="study">{{'Study'|i18n}}</option>
+                            <option value="foreign_language">{{'Foreign lang.'|i18n}}</option>
+                        </select>
+                    </span>
+                </div>
+            </fieldset>
+            <input type="submit" onclick="iui.showPageById('visits')" value="{{'Save'|i18n}}" />
+
         </form>
 
         <!-- TOOLBAR -->

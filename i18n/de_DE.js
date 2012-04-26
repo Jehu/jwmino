@@ -1,5 +1,6 @@
 lang = {
     'Territories': 'Gebiete'
+    ,'Territory':'Gebiet'
     ,'Settings': 'Einstellungen'
     ,'About': 'Info'
     ,'Add Territory': 'Gebiet hinzufügen'
@@ -9,6 +10,7 @@ lang = {
     ,'Streets list': 'Straßen'
     ,'Add Street': 'Straße hinzufügen'
     ,'All': 'Alle'
+    ,'all': 'Alle'
     ,'NH': 'NH'
     ,'RV': 'RB'
     ,'Study': 'Studium'
@@ -39,6 +41,7 @@ lang = {
     ,'City': 'Stadt'
     ,'Edit Street': 'Straße ändern'
     ,'Edit Visit':'Besuch ändern'
+    ,'Visit':'Besuch'
     ,'Create Street': 'Straße erfassen'
     ,'Start': 'Start'
     ,'Language': 'Sprache'
@@ -61,4 +64,10 @@ lang = {
     ,'Foreign language':'Fremdsprachig'
     ,'foreign_language':'Fremdsprachig'
     ,'Visit has been deleted.':'Der Besuch wurde gelöscht.'
+    ,'add':'hinzufügen'
+    ,'delete':'löschen'
+    ,'Edit Street in %s %s':'Straße ändern in %s %s'
+    ,'Create Street for %s %s':'Straße hinzufügen zu %s %s'
+    ,'Address info':'Adressinfo'
+    ,'txt.warning.delete':'Achtung: Dieser Vorgang kann nicht Rückgängig gemacht werden!'
 }

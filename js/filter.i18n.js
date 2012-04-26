@@ -18,27 +18,26 @@
  *
  */
 angular.filter('i18n', function(string) { 
-    // FIXME allow injection of $xhr service
     var log_untranslated = false;
     var placeholders = [];
 
     for(var i=1; i < arguments.length; i++) {
-        placeholders.push(arguments[i]);
+        if(typeof(arguments[i]) == 'object') {
+            angular.forEach(arguments[i], function(item) {
+                placeholders.push(item);
+            })
+        }
+        else {
+            placeholders.push(arguments[i]);
+        }
     }
 
-    // Translation for strings
-    var translate = function(string, placeholders) {
-        var placeholders = placeholders || null;
-        var translated = lang[string]; // lang ist from the language file, e.g. de_DE.js
-        if (translated === undefined) {
-        /*if (log_untranslated == true) {
+    var translated = lang[string]; // lang ist from the language file, e.g. de_DE.js
+    if (translated === undefined) {
+        if (log_untranslated == true) {
             // here we could track unreanslated strings by sending them to the server...
-        }*/
-            return sprintf(string, placeholders);
         }
-        return sprintf(translated, placeholders);
-    };
-
-    var translated = translate(string, placeholders);
-    return translated;
+        return vsprintf(string, placeholders);
+    }
+    return vsprintf(translated, placeholders);
 });

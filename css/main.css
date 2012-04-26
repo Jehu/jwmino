@@ -16,14 +16,35 @@ ul.listview-splitbtn > li a.icon.comment-add {
     color: transparent;
     background: url('./comment_add_32.png') no-repeat scroll 50% 50%;
 }
+span.icon-only,
+span.icon {
+    background-repeat: no-repeat;
+    background-position: 0 50%;
+    padding-left: 20px;
+}
+/*
+span.icon-only {
+    display: inline-block;
+    min-width: 16px;
+}
 span.icon.home {
     padding-left: 20px;
-    background: url('./home.png') no-repeat scroll 0 50%;
+    background: url('./door.png') no-repeat scroll 0 50%;
 }
+span.icon.nh {
+    padding-left: 20px;
+    background: url('./door.png') no-repeat scroll 0 50%;
+}
+span.icon.not_interested {
+    padding-left: 20px;
+    background: url('./door.png') no-repeat scroll 0 50%;
+}
+*/
 span.icon.gender {
     width: 16px;
     height: 16px;
     display: inline-block;
+    padding: 0;
     background: url() no-repeat scroll 0 0;
 }
 span.icon.gender.male {
@@ -32,9 +53,79 @@ span.icon.gender.male {
 span.icon.gender.female {
     background-image: url('./user-yellow-female.png');
 }
+.toolbar a.button.icon > span {
+    background: no-repeat scroll 0 40%;
+    padding-left: 20px;
+}
+.toolbar a.button.icon-only > span {
+    background: no-repeat scroll 0 40%;
+    color: transparent;
+    text-shadow: none;
+    padding-left: 0;
+    overflow: hidden;
+    display: inline-block;
+    width: 16px;
+}
+.toolbar a.button.delete > span {
+    background-image: url('close_16.png');
+}
+.toolbar a.button.add > span {
+    background-image: url('add_16.png');
+}
+.toolbar a.button.filter > span {
+    background-image: url('funnel.png');
+}
+.toolbar a.button.address-edit > span {
+    background-image: url('address-edit.png');
+}
+.toolbar a.button.edit > span {
+    background-image: url('edit.png');
+}
 ul.listview-splitbtn > li p {
     margin: 0 0 0 0;
     padding: 0;
     font-size: 14px;
     font-weight: normal;
+}
+#backbutton {
+    width: 55px;
+    text-align: center;
+}
+/*
+    FIX BODY HEIGHT - begin
+*/
+body > .panel {
+    min-height: 100% !important; /* Mindesthöhe für moderne Browser */
+    height:auto !important; /* Important Regel für moderne Browser */
+    height:100%; /* Mindesthöhe für den IE */
+    overflow: hidden !important; /* FF Scroll-leiste */
+}
+body > :not(.toolbar) {
+    top: 0;
+    padding-top: 60px;
+}
+body > .toolbar {
+    position: absolute;
+    width: 100%;
+}
+/*
+    FIX BODY HEIGHT - end
+*/
+.row.align-left {
+    text-align: left;
+}
+.row.textarea > textarea {
+    width: 100%;
+    border: 0 none;
+    margin: 34px 0 0 0; 
+    padding: 10px 10px 10px 14px; 
+}
+.row > input:not([type|="radio"]):not([type|="checkbox"]),
+.row > label {
+    position:absolute;
+    top:0;
+    left:0;
+}
+.row > input:not([type|="radio"]):not([type|="checkbox"]) {
+    background: transparent;    
 }

@@ -281,7 +281,7 @@
             </div>
             <div data-role="content">
                 <div data-iscroll="scroller">
-                    <form ng:submit="saveVisit()" data-ajax="false">
+                    <form ng:submit="[ saveVisit() ]" data-ajax="false">
                         <div data-role="fieldcontain" style="padding-top: 0.4em; padding-bottom: 0.5em; border: 0 none;">
                             <fieldset data-role="controlgroup" data-type="horizontal" style="margin: 0;">
                                 <select name="curVisit.type">
@@ -298,7 +298,7 @@
                             <label for="note">{{'Note'|i18n}}</label>
                             <textarea name="curVisit.note" id="note" placeholder="{{'Note'|i18n}}"></textarea>
                         </div>
-                        <input type="submit" value="{{'Save'|i18n}}"/>
+                        <input type="submit" value="{{'Save'|i18n}}" onclick="iui.showPageById('notes')"/>
                     </form>
                 </div>
             </div>

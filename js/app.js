@@ -22,8 +22,9 @@ TODO
 function JwminoController(persistencejs, $location, $route) {
     self = this;
 
+    // load external partials to add custom buttons per panel
+    self.tbButtons = './partials/tbbtn_territories.html';
     $route.onChange(function() {
-        console.log($location.hashPath);
         self.tbButtons = './partials/tbbtn' + $location.hashPath + '.html';
     });
 
@@ -108,6 +109,7 @@ JwminoController.$inject = ['persistencejs','$location','$route'];
 
 JwminoController.prototype = {
     saveAddressAndVisit: function() {
+        console.log('number: ', self.curAddress.housenumber);
         this.db.createAddressAndVisit(self.curAddress ,self.curVisit, self.curStreet, function(success) {
             if(!success) {
                 self.flashmessage = 'Note not saved. Empty form?';
@@ -130,7 +132,7 @@ JwminoController.prototype = {
                 }
                 else {
                     self.resetCurVisit();
-                    // FIXME self.navigate('visits');
+                    iui.showPageById('visits');
                 }
             });
         }
@@ -142,7 +144,7 @@ JwminoController.prototype = {
                 }
                 else {
                     self.curVisit = {};
-                    // FIXME self.navigate('notes');
+                    iui.showPageById('notes');
                 }
             });
         }
@@ -157,6 +159,7 @@ JwminoController.prototype = {
                 }
                 else {
                     self.resetCurTerritory();
+                    self.refreshTerritories();
                     // FIXME self.navigate('territories');
                 }
             });
@@ -180,24 +183,20 @@ JwminoController.prototype = {
         if(self.curStreet.id) {
             self.db.updateStreet(self.curStreet, function(success) {
                 if(!success) {
-                    self.flashmessage = 'Not saved, empty form?';
-                    // FIXME self.navigate('message');
+                    self.flashmessage = 'Not saved, empty form?'; // FIXME
                 }
                 else {
                     self.curStreet = {};
-                    // FIXME self.navigate('streets');
                 }
             });
         }
         else {
             this.db.createStreet(self.curStreet, self.curTerritory, function(success) {
                 if(!success) {
-                    self.flashmessage = 'Not saved, empty form?';
-                    // FIXME self.navigate('message');
+                    self.flashmessage = 'Not saved, empty form?'; // FIXME
                 }
                 else {
                     self.curStreet = {};
-                    // FIXME self.navigate('streets');
                 }
             });
         }
@@ -221,7 +220,6 @@ JwminoController.prototype = {
     },
 
     refreshTerritories: function() {
-        console.log('refreshTerritories');
         self.territories = [];
         self.db.getTerritories(function(results) {
             self.territories = results;
@@ -259,13 +257,16 @@ JwminoController.prototype = {
     },
 
     deleteTerritory: function() {
-        // FIXME
-        self.flashmessage = 'Diese Funktion ist noch nicht verfügbar. :-(';
-        // FIXME self.navigate('message');
+        var tmpTerritory = self.curTerritory;
+        self.curTerritory = {};
+        self.db.deleteTerritory(tmpTerritory, function(success) {
+            if(success) {
+                //self.refreshTerritories();
+            }
+        });
     },
 
     deleteVisit: function() {
-        console.log('delete visit');
         var tmpVisit = self.curVisit;
         self.curVisit = {};
         self.db.deleteVisit(tmpVisit, function(success) {
@@ -296,7 +297,6 @@ JwminoController.prototype = {
     setVisits: function() {
         self.curAddress.visits.list(null,function(v) {
             self.visits = angular.Array.orderBy(v, 'date', true);
-            //self.$root.$eval();
         });
     },
 
