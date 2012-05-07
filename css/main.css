@@ -91,26 +91,6 @@ ul.listview-splitbtn > li p {
     width: 55px;
     text-align: center;
 }
-/*
-    FIX BODY HEIGHT - begin
-*/
-body > .panel {
-    min-height: 100% !important; /* Mindesthöhe für moderne Browser */
-    height:auto !important; /* Important Regel für moderne Browser */
-    height:100%; /* Mindesthöhe für den IE */
-    overflow: hidden !important; /* FF Scroll-leiste */
-}
-body > :not(.toolbar) {
-    top: 0;
-    padding-top: 60px;
-}
-body > .toolbar {
-    position: absolute;
-    width: 100%;
-}
-/*
-    FIX BODY HEIGHT - end
-*/
 .row.align-left {
     text-align: left;
 }
