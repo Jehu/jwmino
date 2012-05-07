@@ -132,6 +132,7 @@ JwminoController.prototype = {
                 }
                 else {
                     self.resetCurVisit();
+                    self.refreshVisits();
                     iui.showPageById('visits');
                 }
             });
@@ -143,7 +144,8 @@ JwminoController.prototype = {
                     // FIXME self.navigate('message');
                 }
                 else {
-                    self.curVisit = {};
+                    self.resetCurVisit();
+                    self.refreshVisits();
                     iui.showPageById('notes');
                 }
             });
