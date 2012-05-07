@@ -1,307 +1,61 @@
-<html xmlns:ng="http://angularjs.org" xmlns:ngm="http://jqm-angularjs.org">
-<head>
-    <title>JWMiNo - Ministry notes</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <link rel="stylesheet" href="lib/iui/iui.css" type="text/css">
-    <link rel="stylesheet" href="lib/iui/t/ipdc/ipdc-theme.css" type="text/css">
-    <link rel="stylesheet" href="css/main.css" type="text/css" />
-    <script src="lib/iui/iui.js"></script>
-    <script src="i18n/de_DE.js" type="application/javascript"></script>
-    <script src="lib/moment.min.js" type="application/javascript"></script>
-    <script src="lib/sprintf-0.7-beta1.js" type="application/javascript"></script>
-    <script src="lib/angular-0.9.19.min.js" type="application/javascript" ng:autobind></script>
-    <script src="js/filter.i18n.js" type="application/javascript"></script>
-    <script src="js/filter.moment.js" type="application/javascript"></script>
-    <script src="lib/persistence.js" type="application/javascript"></script>
-    <script src="lib/persistence.store.sql.js" type="application/javascript"></script>
-    <script src="lib/persistence.store.websql.js" type="application/javascript"></script>
-    <script src="js/model.js" type="application/javascript"></script>
-    <script src="js/app.js" type="application/javascript"></script>
+<!doctype html>
+<!-- Conditional comment for mobile ie7 blogs.msdn.com/b/iemobile/ -->
+<!--[if IEMobile 7 ]>    <html class="no-js iem7" lang="en"> <![endif]-->
+<!--[if (gt IEMobile 7)|!(IEMobile)]><!--> <html lang="en"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
 
-</head>
-<body ng:controller="JwminoController">
+        <title></title>
+        <meta name="description" content="">
 
-        <!-- PANEL territories -->
-        <ul title="{{'Territories'|i18n}}" class="panel" id="territories" selected="true">
-            <li ng:repeat="territory in territories">
-                <a href="#streets" ng:click="[setCurTerritory(territory), refreshStreets()]">{{territory.ident}} <span ng:show="territory.city">({{territory.city}})</span></a>
-            </li>
-        </ul>
+        <!-- Mobile viewport optimization h5bp.com/ad -->
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
 
-        <!-- PANEL streets -->
-        <ul class="panel" id="streets" title="{{curTerritory.ident}} {{curTerritory.city}}">
-                <li ng:repeat="street in streets">
-                    <a href="#notes"  ng:click="[ setCurStreet(street), refreshAddresses($parent.addressFilter)]">{{street.name}}</a>
-                </li>
-        </ul>
+        <!-- Home screen icon  Mathias Bynens mathiasbynens.be/notes/touch-icons -->
+        <!-- For iPhone 4 with high-resolution Retina display: -->
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="img/h/apple-touch-icon.png">
+        <!-- For first-generation iPad: -->
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="img/m/apple-touch-icon.png">
+        <!-- For non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
+        <link rel="apple-touch-icon-precomposed" href="img/l/apple-touch-icon-precomposed.png">
+        <!-- For nokia devices: -->
+        <link rel="shortcut icon" href="img/l/apple-touch-icon.png">
 
-        <!-- PANEL notes -->
-        <ul id="notes" class="panel listview-splitbtn" title="{{curStreet.name}}">
-            <li ng:repeat="address in addresses">
-                <a href="#visits" ng:click="[ setCurAddress(address), refreshVisits() ]">
-                    <span class="icon" style="background-image: url('./css/{{address.the_visits[0].type || 'dummy'}}.png')">
-                        <span style="display: inline-block; min-width: 55px;">#{{address.housenumber}}
-                        <span ng:show="address.info"> {{address.info}}</span></span>
-                        <span ng:show="address.gender != 'na'" class="icon gender {{address.gender}}"></span>
-                        <span ng:show="address.age != 'na'" style="font-size: 14px; font-weight: normal;">{{address.age}}</span>
-                        {{address.name}}
-                    </span>
-                    <p ng:show="address.the_visits[0].date">
-                        {{address.the_visits[0].date|moment}}:
-                        <span ng:hide="address.the_visits[0].type == 'normal'"> {{address.the_visits[0].type|i18n}}</span>
-                        <span ng:show="address.the_visits[0].note"> {{address.the_visits[0].note}}</span>
-                    </p>
-                </a>
-                <a href="#edit-visit" class="icon comment-add" ng:click="[ setCurAddress(address), resetCurVisit() ]">&nbsp;</a>
-            </li>
-        </ul>
+        <!-- iOS web app, delete if not needed. https://github.com/h5bp/mobile-boilerplate/issues/94 -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <!--
+        <script>(function(){var a;if(navigator.platform==="iPad"){a=window.orientation!==90||window.orientation===-90?"img/startup-tablet-landscape.png":"img/startup-tablet-portrait.png"}else{a=window.devicePixelRatio===2?"img/startup-retina.png":"img/startup.png"}document.write('<link rel="apple-touch-startup-image" href="'+a+'"/>')})()</script>
+        -->
 
+        <!-- Mobile IE allows us to activate ClearType technology for smoothing fonts for easy reading -->
+        <meta http-equiv="cleartype" content="on">
 
-        <!-- PANEL Visits -->
-        <ul id="visits" class="panel listview-splitbtn" title="#{{curAddress.housenumber|number}} {{curAddress.info}} {{curAddress.name}} ({{curAddress.gender|i18n}})">
-            <li ng:repeat="visit in visits">
-                <a href="#edit-visit" ng:click="setCurVisit(visit)">
-                    <span>{{visit.date|moment}}<span ng:hide="visit.type == 'normal'">, {{visit.type|i18n}}</span></span>
-                    <p><span ng:show="visit.note">{{visit.note}}</span></p>
-                </a>
-            </li>
-        </ul>
+        <!-- more tags for your 'head' to consider h5bp.com/d/head-Tips -->
 
+        <!-- Main Stylesheet -->
+        <link href="css/ng-mobile.css" rel="stylesheet" type="text/css" />
 
+        <script src="./lib/jquery-1.7.2.min.js" type="application/javascript"></script>
+        <script src="./lib/angular-1.0.0rc7_patched_for_android.js" type="application/javascript"></script>
+        <script src="./lib/iscroll4/src/iscroll.js" type="application/javascript"></script>
+        <!--script src="./lib/underscore-min.js" type="application/javascript"></script-->
+        <script src="./lib/ng-mobile.js"></script>
 
-        <!-- PANEL addressFilter -->
-        <form id="address-filter" title="{{'Filter'|i18n}}" class="panel">
-            <fieldset>
-                <div class="row">
-                    <label for="filter-all">{{'All'|i18n}}</label>
-                    <input type="radio" id="filter-all" name="addressFilter" value="all" ng:click="refreshAddresses(null)" onclick="iui.showPageById('notes')" />
-                </div>
+        <script src="js/app.new.js"></script>
 
-                <div class="row">
-                    <label for="filter-nh">{{'NH'|i18n}}</label>
-                    <input type="radio" id="filter-nh" name="addressFilter" value="nh" ng:click="refreshAddresses('nh')" onclick="iui.showPageById('notes')" />
-                </div>
-
-                <div class="row">
-                    <label for="filter-rv">{{'Return visit'|i18n}}</label>
-                    <input type="radio" id="filter-rv" name="addressFilter" value="return_visit" ng:click="refreshAddresses('return_visit')" onclick="iui.showPageById('notes')" />
-                </div>
-
-                <div class="row">
-                    <label for="filter-study">{{'Study'|i18n}}</label>
-                    <input type="radio" id="filter-study" name="addressFilter" value="study" ng:click="refreshAddresses('study')" onclick="iui.showPageById('notes')" />
-                </div>
-
-                <div class="row">
-                    <label for="filter-foreigner">{{'Foreign lang.'|i18n}}</label>
-                    <input type="radio" id="filter-foreigner" name="addressFilter" value="foreign_language" ng:click="refreshAddresses('foreign_language')" onclick="iui.showPageById('notes')" />
-                </div>
-            </fieldset>
-        </form>
-
-        <!-- PANEL Form Edit visit -->
-        <form id="edit-visit" class="panel" ng:submit="saveVisit()" title="{{'Visit'|i18n}} #{{curAddress.housenumber}}, {{curAddress.name}}">
-            <fieldset data-role="controlgroup" data-type="horizontal" style="margin: 0;">
-                <div class="row">
-                    <label>{{'Visit type'|i18n}}</label>
-                    <span style="display: block; position: absolute; right: 5px; top: 6px; padding: 0; text-align: right; white-space: nowrap;">
-                        <select name="curVisit.type">
-                            <option value="nh">{{'NH'|i18n}}</option>
-                            <option value="normal">{{'Normal visit'|i18n}}</option>
-                            <option value="ra">{{'Re-audition'|i18n}}</option>
-                            <option value="not_interested">{{'Not interested'|i18n}}</option>
-                            <option value="return_visit">{{'Return visit'|i18n}}</option>
-                            <option value="foreign_language">{{'Foreign lang.'|i18n}}</option>
-                        </select>
-                    </span>
-                </div>
-                <div class="row textarea">
-                    <label for="note">{{'Note'|i18n}}</label>
-                    <textarea name="curVisit.note" id="note" placeholder="{{'Note'|i18n}}"></textarea>
-                </div>
-                <input type="submit" value="{{'Save'|i18n}}" onclick=""/>
-            </fieldset>
-        </form>
-
-        <!-- PANEL Form Edit note -->
-        <form id="edit-note" class="panel" title="{{'Create Note'|i18n}}" ng:submit="[ saveAddressAndVisit(), refreshVisits() ]">
-            <fieldset>
-                <div class="row">
-                    <!-- FIXME schould be a type="number", bur angular-bug, see: https://github.com/angular/angular.js/issues/504 -->
-                    <input type="text" name="curAddress.housenumber" id="number" placeholder="{{'No.'|i18n}}" ng:format="number">
-                    <label for="number">{{'Number'|i18n}}</label>
-                </div>
-                <div class="row">
-                    <label for="addrinfo">{{'Address info'|i18n}}</label>
-                    <input type="text" name="curAddress.info" id="addrinfo" placeholder="{{'Additional address info'|i18n}}" value="" />
-                </div>
-                <div class="row">
-                    <label for="name">{{'Name'|i18n}}</label>
-                    <input type="text" name="curAddress.name" id="name" placeholder="{{'Name'|i18n}}" />
-                </div>
-            </fieldset>
-            <fieldset>
-                <div class="row">
-                    <label>{{'Person'|i18n}}</label>
-                    <span style="display: block; position: absolute; right: 5px; top: 6px; padding: 0; text-align: right; white-space: nowrap;">
-                        <select name="curAddress.gender">
-                            <option value="na">{{'Gender?'|i18n}}</option>
-                            <option value="female">{{'Female'|i18n}}</option>
-                            <option value="male">{{'Male'|i18n}}</option>
-                        </select>
-                        <select name="curAddress.age">
-                            <option value="na">{{'Age?'|i18n}}</option>
-                            <option>5</option>
-                            <option>10</option>
-                            <option>15</option>
-                            <option>20</option>
-                            <option>25</option>
-                            <option>30</option>
-                            <option>35</option>
-                            <option>40</option>
-                            <option>45</option>
-                            <option>50</option>
-                            <option>55</option>
-                            <option>60</option>
-                            <option>65</option>
-                            <option>70</option>
-                            <option>75</option>
-                            <option>80</option>
-                            <option>85</option>
-                            <option>90</option>
-                            <option>95</option>
-                            <option>100</option>
-                        </select>
-                        <select name="curVisit.type">
-                            <option value="nh">{{'NH'|i18n}}</option>
-                            <option value="normal">{{'Normal visit'|i18n}}</option>
-                            <option value="not_interested">{{'Not interested'|i18n}}</option>
-                            <option value="ra">{{'Re-audition'|i18n}}</option>
-                            <option value="return_visit">{{'Return visit'|i18n}}</option>
-                            <option value="foreign_language">{{'Foreign lang.'|i18n}}</option>
-                        </select>
-                    <span>
-                </div>
-            </fieldset>
-            <fieldset>
-                <div class="row align-left textarea">
-                    <label for="note">{{'Note'|i18n}}</label>
-                    <textarea name="curVisit.note" id="note" placeholder="{{'Note'|i18n}}"></textarea>
-                </div>
-                <input type="submit"  value="{{'Save'|i18n}}" onclick="iui.showPageById('notes')" />
-            </fieldset>
-        </form>
-
-        <!-- PANEL Edit Territory form -->
-        <form id="edit-territory" class="panel" ng:submit="[saveTerritory(), refreshTerritories()]">
-            <h3 ng:show="curTerritory.id">{{'Edit Territory'|i18n}}</h3>
-            <h3 ng:hide="curTerritory.id">{{'Create Territory'|i18n}}</h3>
-            <fieldset>
-                <div class="row">
-                    <label for="ident">{{'Ident'|i18n}}</label>
-                    <input type="text" id="ident" name="curTerritory.ident" placeholder="{{'Ident'|i18n}}" />
-                </div>
-                <div class="row">
-                    <label for="city">{{'City'|i18n}}</label>
-                    <input type="text" id="city" name="curTerritory.city" placeholder="{{'City'|i18n}}" />
-                </div>
-            </fieldset>
-            <input type="submit" onclick="iui.showPageById('territories')" value="{{'Save'|i18n}}" />
-            <span ng:show="curTerritory.id" >
-                <h3>{{'Delete'|i18n}}</h3>
-                <p>{{'txt.warning.delete'|i18n}}</p>
-                <input type="button" value="{{'Delete'|i18n}}" ng:click="[ deleteTerritory(), refreshTerritories() ]" onclick="iui.showPageById('territories')"/>
-            </span>
-
-        </form>
-
-        <!-- PANEL Edit Street Form -->
-        <form class="panel" id="edit-street" title="{{'Edit Street'|i18n}}" ng:submit="[saveStreet(), refreshStreets()]">
-            <h3 ng:show="curStreet.id">{{'Edit Street in %s %s'|i18n:curTerritory.ident:curTerritory.city }}</h3>
-            <h3 ng:hide="curStreet.id">{{'Create Street for %s %s'|i18n:[curTerritory.ident,curTerritory.city]}}</h3>
-            <fieldset>
-                <div class="row">
-                    <label for="name">{{'Name'|i18n}}</label>
-                    <input type="text" id="name" name="curStreet.name" placeholder="{{'Street name'|i18n}}">
-                </div>
-            </fieldset>
-            <input type="submit" onclick="iui.showPageById('streets')" value="{{'Save'|i18n}}" />
-        </form>
-
-
-        <!-- PANEL Edit Address form -->
-        <form id="edit-address" class="panel" ng:submit="[ saveAddress(), refreshAddresses() ]">
-            <h3>{{'Edit Address'|i18n}}</h3>
-            <fieldset>
-                <div class="row">
-                    <label for="number">{{'Number'|i18n}}</label>
-                    <input type="text" name="curAddress.housenumber" id="number" placeholder="{{'No.'|i18n}}" ng:format="number">
-                </div>
-                <div class="row">
-                    <label for="addrinfo">{{'Address info'|i18n}}</label>
-                    <input type="text" name="curAddress.info" id="addrinfo" placeholder="{{'Additional address info'|i18n}}" value="" />
-                </div>
-                <div class="row">
-                    <label for="name">{{'Name'|i18n}}</label>
-                    <input type="text" name="curAddress.name" id="name" placeholder="{{'Name'|i18n}}" />
-                </div>
-            </fieldset>
-            <fieldset>
-                <div class="row">
-                    <label>{{'Person'|i18n}}</label>
-                    <span style="display: block; position: absolute; right: 5px; top: 6px; padding: 0; text-align: right; white-space: nowrap;">
-                        <select name="curAddress.gender">
-                            <option value="na">{{'Gender?'|i18n}}</option>
-                            <option value="female">{{'Female'|i18n}}</option>
-                            <option value="male">{{'Male'|i18n}}</option>
-                        </select>
-                        <select name="curAddress.age">
-                            <option value="na">{{'Age?'|i18n}}</option>
-                            <option>5</option>
-                            <option>10</option>
-                            <option>15</option>
-                            <option>20</option>
-                            <option>25</option>
-                            <option>30</option>
-                            <option>35</option>
-                            <option>40</option>
-                            <option>45</option>
-                            <option>50</option>
-                            <option>55</option>
-                            <option>60</option>
-                            <option>65</option>
-                            <option>70</option>
-                            <option>75</option>
-                            <option>80</option>
-                            <option>85</option>
-                            <option>90</option>
-                            <option>95</option>
-                            <option>100</option>
-                        </select>
-                        <select name="curAddress.type">
-                            <option value="na">{{'n/a'|i18n}}</option>
-                            <option value="return_visit">{{'perm. RV'|i18n}}</option>
-                            <option value="study">{{'Study'|i18n}}</option>
-                            <option value="foreign_language">{{'Foreign lang.'|i18n}}</option>
-                        </select>
-                    </span>
-                </div>
-            </fieldset>
-            <input type="submit" onclick="iui.showPageById('visits')" value="{{'Save'|i18n}}" />
-
-        </form>
-
-        <!-- TOOLBAR -->
-        <div class="toolbar">
-            <h1 id="pageTitle"></h1>
-            <a id="backButton" class="button" href="#"></a>
-            <ng:include src="tbButtons"></ng:include>
-        </div>
-
-        <!--div id="footer">
-            <a href=#" class="button">Bla</a>
-        </div-->
-</body>
+        <script type="text/javascript">
+            // for iScroll
+            document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+        </script>
+    </head>
+    <body ng-app="ngMobile" ng-controller="MainCntl" ng-cloak>
+        <header ng-include="header"></header>
+        <div ng-view id="content"></div>
+        <footer ng-include="footer"></footer>
+        <div id="loader" ngm-remove-preloader></div>
+    </body>
 </html>
