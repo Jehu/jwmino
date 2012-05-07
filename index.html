@@ -54,7 +54,7 @@
                         <span ng:show="address.the_visits[0].note"> {{address.the_visits[0].note}}</span>
                     </p>
                 </a>
-                <a href="#edit-visit" class="icon comment-add" ngm:click="[ setCurAddress(address), resetCurVisit() ]">{{'Add visit'|i18n}}</a>
+                <a href="#edit-visit" class="icon comment-add" ng:click="[ setCurAddress(address), resetCurVisit() ]">&nbsp;</a>
             </li>
         </ul>
 
@@ -102,7 +102,7 @@
         </form>
 
         <!-- PANEL Form Edit visit -->
-        <form id="edit-visit" class="panel" ng:submit="[ saveVisit(), refreshVisits() ]" title="{{'Visit'|i18n}} #{{curAddress.housenumber}}, {{curAddress.name}}">
+        <form id="edit-visit" class="panel" ng:submit="saveVisit()" title="{{'Visit'|i18n}} #{{curAddress.housenumber}}, {{curAddress.name}}">
             <fieldset data-role="controlgroup" data-type="horizontal" style="margin: 0;">
                 <div class="row">
                     <label>{{'Visit type'|i18n}}</label>
