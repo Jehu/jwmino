@@ -1,0 +1,26 @@
+<div ng-controller="VisitsCntl">
+    <div id="header">
+        <h1>#{{srv.curAddress.housenumber|number}} {{srv.curAddress.info}} {{srv.curAddress.name}} ({{srv.curAddress.gender|i18n}})</h1>
+    </div>
+    <div id="wrapper">
+        <div id="scroller">
+            <ul class="listview">
+                <li ng-repeat="visit in srv.visits">
+                    <a href="#edit-visit" ng-click="srv.setCurVisit(visit)">
+                        <h2>{{visit.date|date:'short'}}<span ng-hide="visit.type == 'normal'">, {{visit.type|i18n}}</span></h2>
+                        <p><span ng-show="visit.note">{{visit.note}}</span></p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div id="footer">
+        <ul>
+            <!--li><a href="#territories" class="icon home">Territories</a></li-->
+            <!--li><a href="#streets" class="icon pin">Streets</a></li-->
+            <li><a href="#notes" class="icon pencil active">Notes</a></li>
+            <li><a href="#visits" class="icon stack active">Visits</a></li>
+            <li><a href="#edit-visit" class="icon add">Add Visit</a></li>
+        </ul>
+    </div>
+</div>

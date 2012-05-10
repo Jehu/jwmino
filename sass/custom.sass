@@ -1,0 +1,124 @@
+@import "ng-mobile.sass"
+
+footer > ul, #footer > ul
+  display: table
+  width: 100%
+  table-layout: fixed
+  > li
+    display: table-cell
+    > a
+      display: block
+      width: auto
+      margin: 0
+      text-align: center
+      padding: 0 1px
+
+ul.listview li
+  h2
+    font-size: 18px
+    font-weight: bold
+    margin: 8px 0 
+  p
+    margin: -2px 0 8px 0
+  > a
+    overflow: hidden
+    min-height: 45px
+    &:after
+      top: 26%
+      line-height: 100%
+span, h2
+  &.icon-only
+    background-repeat: no-repeat
+    background-position: 0 50%
+    padding-left: 20px
+  &.icon
+    background-repeat: no-repeat
+    background-position: 0 50%
+    padding-left: 20px
+    &.gender
+      width: 16px
+      height: 16px
+      display: inline-block
+      padding: 0
+      background: url() no-repeat scroll 0 0
+      &.male
+        background-image: url('./user.png')
+      &.female
+        background-image: url('./user-yellow-female.png')
+
+ul.listview-splitbtn li
+  overflow: hidden
+  padding: 0 10px
+  line-height: 100%
+  height: auto
+  border-bottom: 1px solid #ccc
+  border-top: 1px solid #fff
+  background-color: #fafafa
+  position: relative
+  h2
+    font-size: 18px
+    font-weight: bold
+    margin: 8px 0 4px 0
+  p
+    margin: 4px 0 8px 0
+  > a
+    position: relative
+    display: block
+    font-size: 14px
+    font-weight: normal 
+    color: $default-text-color
+    text-decoration: none
+    padding-right: 30px
+
+ul.listview-splitbtn > li a
+  &:nth-child(1n+2)
+    position: absolute
+    width: 40px
+    height: 40px
+    right: 0
+    top: 0
+    margin: 0
+    padding: 0
+    z-index: 2
+  &:nth-child(1n+1), &:nth-child(1n+2)
+    background: none
+
+ul.listview-splitbtn > li a.icon.comment-add
+  color: transparent
+  background: url('./comment_add_32.png') no-repeat scroll 50% 50%
+
+
+input, textarea, select, .uneditable-input
+  height: auto
+
+.row
+  &.align-left
+    text-align: left
+  &.textarea
+    height: auto
+  &.textarea > textarea
+    width: 100%
+    border: 0 none
+    margin: 34px 0 9px 0
+    padding: 10px 10px 10px 14px
+
+form 
+  .row
+    > input
+      position: absolute
+      right: 10px
+      top: 0
+
+div.dialog
+  position: absolute
+  top: 0
+  bottom: 0%
+  left: 0
+  right: 0%
+  z-index: 99
+  background-color: #d8d8d8
+  .wrapper 
+    text-align: center
+    width: 90%
+    margin: 0 auto
+    border: 1px solid black

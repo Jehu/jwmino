@@ -1,0 +1,33 @@
+<div ng-controller="NotesCntl">
+    <div id="wrapper">
+        <div id="scroller">
+            <ul class="listview-splitbtn">
+                <li ng-repeat="address in addresses">
+                    <a href="#visits" ng-click="srv.setCurAddress(address)">
+                        <h2 class="icon" style="background-image: url('./css/{{address.the_visits[0].type || 'dummy'}}.png')">
+                            <span style="display: inline-block; min-width: 55px;">#{{address.housenumber}}
+                            <span ng-show="address.info"> {{address.info}}</span></span>
+                            <span ng-show="address.gender != 'na'" class="icon gender {{address.gender}}"></span>
+                            <span ng-show="address.age != 'na'" style="font-size: 14px; font-weight: normal;">{{address.age}}</span>
+                            {{address.name}}
+                        </h2>
+                        <p style="margin-top: 8px" ng-show="address.the_visits[0].date">
+                            {{address.the_visits[0].date|date:'short'}}:
+                            <span ng-hide="address.the_visits[0].type == 'normal'"> {{address.the_visits[0].type|i18n}}</span>
+                            <span ng-show="address.the_visits[0].note"> {{address.the_visits[0].note}}</span>
+                        </p>
+                    </a>
+                    <a href="#edit-visit" class="icon comment-add" ng-click="srv.setCurAddress(address)">&nbsp;</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div id="footer">
+        <ul>
+            <!--li><a href="#territories" class="icon home">Territories</a></li-->
+            <li><a href="#streets" class="icon pin">Streets</a></li>
+            <li><a href="#notes" class="icon pencil active">Notes</a></li>
+            <li><a href="#edit-note" class="icon add" ng-click="[ srv.resetCurAddress(), srv.resetCurVisit() ]">Add Note</a></li>
+        </ul>
+    </div>
+</div>

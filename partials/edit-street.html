@@ -1,0 +1,26 @@
+<div ng-controller="EditStreetCntl">
+    <div id="header">
+        <h1 ng-show="srv.curStreet.id">{{'Edit Street in %s %s'|i18n:srv.curTerritory.ident:srv.curTerritory.city }}</h1>
+        <h1 ng-hide="srv.curStreet.id">{{'Create Street for %s %s'|i18n:[srv.curTerritory.ident,srv.curTerritory.city]}}</h1>
+    </div>
+    <div id="wrapper">
+        <div id="scroller">
+            <form ng-submit="[ srv.saveStreet(), $location.url('/streets') ]">
+                <fieldset>
+                    <div class="row">
+                        <label for="name">{{'Name'|i18n}}</label>
+                        <input type="text" id="name" ng-model="srv.curStreet.name" placeholder="{{'Street name'|i18n}}">
+                    </div>
+                </fieldset>
+                <input type="submit" value="{{'Save'|i18n}}" />
+            </form>
+        </div>
+    </div>
+    <div id="footer">
+        <ul>
+            <li><a href="#territories" class="icon location">Territories</a></li>
+            <li><a href="#streets" class="icon pin">Streets</a></li>
+            <li><a href="#edit-street" class="icon add active">Add Street</a></li>
+        </ul>
+    </div>
+</div>

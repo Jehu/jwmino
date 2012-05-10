@@ -1,17 +1,32 @@
 <div ng-controller="TerritoriesCntl">
     <div id="header">
-        <h1>{{txtHeader}}</h1>
+        <h1>{{txtHeader|i18n}}</h1>
     </div>
     <div id="wrapper">
         <div id="scroller">
             <ul class="listview">
-                <li ng:repeat="territory in territories">
-                    <a href="#streets" ng-click="[setCurTerritory(territory), refreshStreets()]">
+                <li ng-repeat="territory in territories" ngm-touchable="dialogAction.show([ {text: 'Delete this territory', callback: 'confirmDeleteTerritory({{territory}})' }, {text: 'Reset Database', callback: 'confirmResetDatabase'} ])">
+                    <a href="#streets" ng-click="srv.setCurTerritory(territory)">
                         <h2>{{territory.ident}}</h2>
-                        <p ng:show="territory.city">({{territory.city}})</p>
+                        <p ng-show="territory.city">({{territory.city}})</p>
                     </a>
                 </li>
             </ul>
+            <!--
+            <button ng-click="dialogConfirm.show('Was willst du?', 'dialogCallbackTwo(\'one two\')')">Zeige Confirm-Dialog</button>
+            <button ng-click="dialogAction.show()">Zeige Action-Dialog</button>
+            <button ng-click="dialogAction.show([{ text: 'Roger!', callback: 'test(\'ja ja ja!\')' }])">Zeige Action-Dialog mit custom options</button>
+            -->
+
         </div>
     </div>
+    <div id="footer">
+        <ul>
+            <li><a href="#territories" class="active icon location">Territories</a></li>
+            <li><a href="#edit-territory" class="icon add" ng-click="srv.resetCurTerritory()">Add Territory</a></li>
+            <li><a href="#info" class="icon settings">Settings</a></li>
+        </ul>
+    </div>
+    <ngm-dialog-confirm callback="dialogCallback"></ngm-dialog-confirm>
+    <ngm-dialog-action actions="[{ text: 'Ac #1', callback: 'test(\'adasd\')' }]"></ngm-dialog-action>
 </div>

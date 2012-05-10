@@ -1,25 +1,31 @@
-<div id="wrapper">
-    <div id="scroller">
-        <form id="edit-territory" ng-submit="[saveTerritory(), refreshTerritories()]">
-            <h3 ng-show="curTerritory.id">{{'Edit Territory'|i18n}}</h3>
-            <h3 ng-hide="curTerritory.id">{{'Create Territory'|i18n}}</h3>
-            <fieldset>
-                <div class="row">
-                    <label for="ident">{{'Ident'|i18n}}</label>
-                    <input type="text" id="ident" name="curTerritory.ident" placeholder="{{'Ident'|i18n}}" />
-                </div>
-                <div class="row">
-                    <label for="city">{{'City'|i18n}}</label>
-                    <input type="text" id="city" name="curTerritory.city" placeholder="{{'City'|i18n}}" />
-                </div>
-            </fieldset>
-            <input type="submit" onclick="iui.showPageById('territories')" value="{{'Save'|i18n}}" />
-            <span ng-show="curTerritory.id" >
-                <h3>{{'Delete'|i18n}}</h3>
-                <p>{{'txt.warning.delete'|i18n}}</p>
-                <a class="btn" ng-click="[ deleteTerritory(), refreshTerritories() ]" />{{'Delete'|i18n}}</a>
-            </span>
-
-        </form>
+<div ng-controller="EditTerritoryCntl">
+    <div id="wrapper">
+        <div id="scroller">
+            <form>
+                <fieldset>
+                    <div class="row">
+                        <label for="ident">{{'Ident'|i18n}}</label>
+                        <input type="text" id="ident" ng-model="srv.curTerritory.ident" placeholder="{{'Ident'|i18n}}" />
+                    </div>
+                    <div class="row">
+                        <label for="city">{{'City'|i18n}}</label>
+                        <input type="text" id="city" ng-model="srv.curTerritory.city" placeholder="{{'City'|i18n}}" />
+                    </div>
+                </fieldset>
+                <a class="btn" href="#territories" ng-click="srv.saveTerritory()">{{'Save'|i18n}}</a>
+                <span ng-show="curTerritory.id" >
+                    <h3>{{'Delete'|i18n}}</h3>
+                    <p>{{'txt.warning.delete'|i18n}}</p>
+                    <a class="btn" ng-click="[ srv.deleteTerritory(), srv.refreshTerritories() ]" />{{'Delete'|i18n}}</a>
+                </span>
+    
+            </form>
+        </div>
+    </div>
+    <div id="footer">
+        <ul>
+            <li><a href="#territories" class="icon location">Territories</a></li>
+            <li><a href="#edit-territory" class="active icon add">Add Territory</a></li>
+        </ul>
     </div>
 </div>

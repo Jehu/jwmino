@@ -1,0 +1,23 @@
+<div ng-controller="StreetsCntl">
+    <div id="wrapper">
+        <div id="scroller">
+            <ul class="listview">
+                <li ng-repeat="street in streets" ngm-touchable="dialogAction.show([ {text: 'Delete steet', callback: 'confirmDeleteStreet({{street}})' } ])">
+                    <a href="#notes"  ng-click="[ srv.setCurStreet(street), srv.refreshAddresses($parent.addressFilter)]">
+                        <h2>{{street.name}}</h2>
+                        <p>{{street.addresses[0].housenumber}} FIXME: Anzahl Adressen, vielleicht mit Anzahl NH, RB u.s.w</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div id="footer">
+        <ul>
+            <li><a href="#territories" class="icon location">Territories</a></li>
+            <li><a href="#streets" class="icon pin active">Streets</a></li>
+            <li><a href="#edit-street" class="icon add" ng-click="srv.resetCurStreet()">Add Street</a></li>
+        </ul>
+    </div>
+    <ngm-dialog-confirm></ngm-dialog-confirm>
+    <ngm-dialog-action></ngm-dialog-action>
+</div>

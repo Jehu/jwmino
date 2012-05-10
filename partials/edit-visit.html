@@ -1,0 +1,37 @@
+<div ng-controller="EditVisitCntl">
+    <div id="wrapper">
+        <div id="scroller">
+            <form class="form-horizontal" ng-submit="[ srv.saveVisit(), $location.url('/notes') ]">
+                <fieldset>
+                    <div class="row">
+                        <label>{{'Visit type'|i18n}}</label>
+                        <select ng-model="srv.curVisit.type">
+                            <option value="nh">{{'NH'|i18n}}</option>
+                            <option value="normal">{{'Normal visit'|i18n}}</option>
+                            <option value="ra">{{'Re-audition'|i18n}}</option>
+                            <option value="not_interested">{{'Not interested'|i18n}}</option>
+                            <option value="return_visit">{{'Return visit'|i18n}}</option>
+                            <option value="foreign_language">{{'Foreign lang.'|i18n}}</option>
+                        </select>
+                    </div>
+                    <div class="row textarea">
+                        <label for="note">{{'Note'|i18n}}</label>
+                        <textarea ng-model="srv.curVisit.note" id="note" placeholder="{{'Note'|i18n}}"></textarea>
+                    </div>
+                    <div class="row button-group">
+                        <input type="submit" value="{{'Save'|i18n}}" />
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+    <div id="footer">
+        <ul>
+            <!--li><a href="#territories" class="icon home">Territories</a></li-->
+            <!--li><a href="#streets" class="icon pin">Streets</a></li-->
+            <li><a href="#notes" class="icon pencil">Notes</a></li>
+            <li><a href="#visits" class="icon stack">Visits</a></li>
+            <li><a href="#edit-visit" class="icon add active">Add Visit</a></li>
+        </ul>
+    </div>
+</div>

@@ -4,6 +4,7 @@
 ngMobile.config(function($routeProvider, $locationProvider) {
     // configure your routes to load the partials / views and bind controllers
     $routeProvider.when('/territories', { template: 'partials/territories.html', controller: TerritoriesCntl });
+    $routeProvider.when('/streets', { template: 'partials/streets.html', controller: StreetsCntl });
     $routeProvider.when('/notes', { template: 'partials/notes.html', controller: NotesCntl });
     $routeProvider.when('/visits', { template: 'partials/visits.html', controller: VisitsCntl });
     $routeProvider.when('/address-filter', { template: 'partials/address-filter.html', controller: AddressFilterCntl });
@@ -18,24 +19,126 @@ ngMobile.config(function($routeProvider, $locationProvider) {
     $locationProvider.html5Mode(false).hashPrefix('');
 });
 
-ngMobile.factory('jwminoServ', function() {
-    return {
-            
-    }
-});
+
 
 /**
  * Startpage Controller
  */
-function TerritoriesCntl($scope, jwminoServ) {
-    $scope.setHeaderText('Territories');    
+function TerritoriesCntl($scope, $location, jwminoSrv) {
+    var s   = $scope;
+    var srv = $scope.srv = jwminoSrv;
+
+    $scope.territories = [];
+    $scope.setHeaderText('Territories');
+
+    $scope.tmpTerritoryToDelete = undefined;
+
+    s.confirmDeleteTerritory = function(territory) {
+        if(territory != undefined) {
+            s.tmpTerritoryToDelete = territory;
+            s.dialogConfirm.show('Really delete Territory ' + territory.ident + ' ' + territory.city + '?', 'deleteConfirmCallback');
+        }
+    }
+
+    s.confirmResetDatabase = function() {
+        s.dialogConfirm.show('Really erease all data?', 'resetDatabaseConfirmCallback');
+    }
+
+    s.deleteConfirmCallback = function(answer) {
+        if(answer == 'yes' && s.tmpTerritoryToDelete != undefined) {
+            srv.deleteTerritory(s.tmpTerritoryToDelete);
+            srv.refreshTerritories($scope);
+        }
+    };
+    $scope.resetDatabaseConfirmCallback = function(answer) {
+        if(answer == 'yes') {
+            srv.appReset();
+            srv.refreshTerritories($scope);
+            $location.path('/');
+        }
+    }
+
+
+    // load territories from DB
+    srv.refreshTerritories($scope);
 }
-function NotesCntl($scope, jwminoServ) {}
-function VisitsCntl($scope, jwminoServ) {}
-function AddressFilterCntl($scope, jwminoServ) {}
-function EditVisitCntl($scope, jwminoServ) {}
-function EditNoteCntl($scope, jwminoServ) {}
-function EditTerritoryCntl($scope, jwminoServ) {}
-function EditStreetCntl($scope, jwminoServ) {}
+
+function StreetsCntl($scope, jwminoSrv) {
+    var s = $scope;
+    var srv = $scope.srv = jwminoSrv;
+
+    $scope.streets = [];
+    $scope.setHeaderText('Streets');
+
+    // load streets from DB
+    srv.refreshStreets($scope);
+
+    s.tmpStreetToDelete = undefined; 
+    $scope.confirmDeleteStreet = function(street) {
+        if(street != undefined) {
+            s.tmpStreetToDelete = street;
+            s.dialogConfirm.show('Really delete street ' + street.name + '?', 'deleteConfirmCallback');
+        }
+    }
+
+    $scope.deleteConfirmCallback = function(answer) {
+        if(answer == 'yes' && s.tmpStreetToDelete != undefined) {
+            srv.deleteStreet(s.tmpStreetToDelete);
+            srv.refreshStreets($scope);
+        }
+    };
+    
+}
+
+function NotesCntl($scope, jwminoSrv) {
+    var s = $scope;
+    var srv = $scope.srv = jwminoSrv;
+
+    $scope.addresses = srv.addresses;
+    $scope.setHeaderText('Notes');
+
+    srv.refreshAddresses($scope);
+}
+
+function VisitsCntl($scope, jwminoSrv) {
+    var s = $scope;
+    var srv = $scope.srv = jwminoSrv;
+
+    srv.refreshVisits($scope);
+}
+
+function AddressFilterCntl($scope, jwminoSrv) {}
+
+function EditVisitCntl($scope, $location, jwminoSrv) {
+    var s = $scope;
+    var srv = $scope.srv = jwminoSrv;
+    $scope.$location = $location;
+
+    $scope.setHeaderText('Visit');
+}
+
+function EditNoteCntl($scope, $location, jwminoSrv) {
+    var s = $scope;
+    var srv = $scope.srv = jwminoSrv;
+    $scope.$location = $location;
+    $scope.setHeaderText('Note');
+}
+
+function EditTerritoryCntl($scope, jwminoSrv) {
+    var s = $scope;
+    var srv = $scope.srv = jwminoSrv;
+
+    var headerText = (srv.curTerritory.id) ?  'Edit Territory' : 'Create Territory';
+    $scope.setHeaderText(headerText);
+}
+
+function EditStreetCntl($scope, $location, jwminoSrv) {
+    var s = $scope;
+    var srv = $scope.srv = jwminoSrv;
+    $scope.$location = $location;
+
+    var headerText = (srv.curStreet.id) ? 'Create Street' : 'Edit Street';
+}
+
 function EditAddressCntl($scope, jwminoServ) {}
 
