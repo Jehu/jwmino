@@ -1,0 +1,73 @@
+<div ng-controller="EditAddressCntl">
+    <div id="wrapper">
+        <div id="scroller">
+            <form ng-submit="[ srv.saveAddress(), $location.path('/notes') ]">
+                <fieldset>
+                    <div class="row">
+                        <label for="number">{{'Number'|i18n}}</label>
+                        <input type="number" ng-model="curAddress.housenumber" id="number" placeholder="{{'No.'|i18n}}" ng-format="number">
+                    </div>
+                    <div class="row">
+                        <label for="addrinfo">{{'Address info'|i18n}}</label>
+                        <input type="text" ng-model="curAddress.info" id="addrinfo" placeholder="{{'Additional address info'|i18n}}" />
+                    </div>
+                    <div class="row">
+                        <label for="name">{{'Name'|i18n}}</label>
+                        <input type="text" ng-model="curAddress.name" id="name" placeholder="{{'Name'|i18n}}" />
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <div class="row">
+                        <label>{{'Person'|i18n}}</label>
+                        <span style="display: block; position: absolute; right: 5px; top: 6px; padding- 0; text-align: right; white-space: nowrap;">
+                            <select ng-model="curAddress.gender" style="width: auto;">
+                                <option value="na">{{'Gender?'|i18n}}</option>
+                                <option value="female">{{'Female'|i18n}}</option>
+                                <option value="male">{{'Male'|i18n}}</option>
+                            </select>
+                            <select ng-model="curAddress.age" style="width: auto;">
+                                <option value="na">{{'Age?'|i18n}}</option>
+                                <option>5</option>
+                                <option>10</option>
+                                <option>15</option>
+                                <option>20</option>
+                                <option>25</option>
+                                <option>30</option>
+                                <option>35</option>
+                                <option>40</option>
+                                <option>45</option>
+                                <option>50</option>
+                                <option>55</option>
+                                <option>60</option>
+                                <option>65</option>
+                                <option>70</option>
+                                <option>75</option>
+                                <option>80</option>
+                                <option>85</option>
+                                <option>90</option>
+                                <option>95</option>
+                                <option>100</option>
+                            </select>
+                            <select ng-model="curAddress.type" style="width: auto;">
+                                <option value="na">{{'n/a'|i18n}}</option>
+                                <option value="return_visit">{{'perm. RV'|i18n}}</option>
+                                <option value="study">{{'Study'|i18n}}</option>
+                                <option value="foreign_language">{{'Foreign lang.'|i18n}}</option>
+                            </select>
+                        </span>
+                    </div>
+                </fieldset>
+                <div class="row button-bar">
+                    <input type="submit" value="{{'Save'|i18n}}" />
+                </div>
+
+            </form>        
+        </div>
+    </div>
+    <div id="footer">
+        <ul>
+            <li><a href="#notes" class="icon pencil">Notes</a></li>
+            <li><a href="#edit-address" class="icon add active">Edit Address</a></li>
+        </ul>
+    </div>
+</div>

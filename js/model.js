@@ -202,8 +202,20 @@ angular.module('database', [], function($provide) {
                 cb(true);
             },
 
+            deleteAddress: function(item, cb) {
+                var collection = Street.all();
+                Address.load(item.id, function(i) {
+                    collection.remove(i);
+                });
+                persistence.flush();
+                cb(true);
+            },
+
             deleteVisit: function(item, cb) {
-                Visit.all().remove(item);
+                var collection = Address.all();
+                Visit.load(item.id, function(i) {
+                    collection.remove(i);
+                });
                 persistence.flush();
                 cb(true);
             },
@@ -218,6 +230,10 @@ angular.module('database', [], function($provide) {
                 streets.list(null, cb);
             },
     
+            getAddressById: function(id, cb) {
+                Address.load(id, cb);
+            },
+
             getAddressesByStreet: function(street, filter, cb) {
                 var addresses= Address.all().filter("street", '=', street.id).order('housenumber', true);
                 if(!filter || filter == 'all') {

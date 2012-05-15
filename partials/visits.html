@@ -5,7 +5,7 @@
     <div id="wrapper">
         <div id="scroller">
             <ul class="listview">
-                <li ng-repeat="visit in srv.visits">
+                <li ng-repeat="visit in srv.visits" ngm-touchable="dialogAction.show([ { text: 'Delete Visit', callback: 'confirmDeleteVisit({{visit}})' } ]);">
                     <a href="#edit-visit" ng-click="srv.setCurVisit(visit)">
                         <h2>{{visit.date|date:'short'}}<span ng-hide="visit.type == 'normal'">, {{visit.type|i18n}}</span></h2>
                         <p><span ng-show="visit.note">{{visit.note}}</span></p>
@@ -16,11 +16,11 @@
     </div>
     <div id="footer">
         <ul>
-            <!--li><a href="#territories" class="icon home">Territories</a></li-->
-            <!--li><a href="#streets" class="icon pin">Streets</a></li-->
-            <li><a href="#notes" class="icon pencil active">Notes</a></li>
+            <li><a href="#notes" class="icon pencil">Notes</a></li>
             <li><a href="#visits" class="icon stack active">Visits</a></li>
-            <li><a href="#edit-visit" class="icon add">Add Visit</a></li>
+            <li><a href="#edit-visit" class="icon add" ng-click="srv.resetCurVisit()">Add Visit</a></li>
         </ul>
     </div>
+    <ngm-dialog-confirm></ngm-dialog-confirm>
+    <ngm-dialog-action></ngm-dialog-action>
 </div>

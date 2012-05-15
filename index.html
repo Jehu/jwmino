@@ -43,13 +43,18 @@
         <script src="lib/sprintf-0.7-beta1.js" type="application/javascript"></script>
         <script src="i18n/de_DE.js" type="application/javascript"></script>
         <script src="./lib/jquery-1.7.2.min.js" type="application/javascript"></script>
-        <script src="./lib/angular-1.0.0rc7_patched_for_android.js" type="application/javascript"></script>
+        <script src="./lib/angular.js" type="application/javascript"></script>
         <script src="./i18n/angular-locale_de-de.js" type="application/javascript"></script>
-        <script src="./lib/iscroll4/src/iscroll.js" type="application/javascript"></script>
         <script src="./lib/underscore-min.js" type="application/javascript"></script>
         <script src="./js/filter.i18n.js"></script>
+        <script src="./js/filter.nl2br.js"></script>
         <script src="./lib/hammer.js"></script>
         <script src="./lib/jquery.hammer.js"></script>
+        <script src="./lib/iscroll4/src/iscroll.js" type="application/javascript"></script>
+        <script type="text/javascript">
+            // for iScroll
+            document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+        </script>
         <script src="./lib/ng-mobile.js"></script>
 
         <script src="lib/persistence.js" type="application/javascript"></script>
@@ -61,10 +66,6 @@
 
         <script src="js/app.new.js"></script>
 
-        <script type="text/javascript">
-            // for iScroll
-            document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
-        </script>
     </head>
     <body ng-app="ngMobile" ng-controller="MainCntl" ng-cloak>
         <header ng-include="header"></header>

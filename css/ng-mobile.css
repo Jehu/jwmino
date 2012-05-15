@@ -359,7 +359,7 @@ a.btn, button, input[type=submit] {
   -moz-box-shadow: inset 0px 1px 0px 0px white;
   -webkit-box-shadow: inset 0px 1px 0px 0px white;
   box-shadow: inset 0px 1px 0px 0px white;
-  background-color: transparent;
+  background-color: #929292;
   -moz-border-radius: 6px;
   -webkit-border-radius: 6px;
   border-radius: 6px;

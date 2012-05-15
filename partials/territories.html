@@ -5,7 +5,7 @@
     <div id="wrapper">
         <div id="scroller">
             <ul class="listview">
-                <li ng-repeat="territory in territories" ngm-touchable="dialogAction.show([ {text: 'Delete this territory', callback: 'confirmDeleteTerritory({{territory}})' }, {text: 'Reset Database', callback: 'confirmResetDatabase'} ])">
+                <li ng-repeat="territory in territories" ngm-touchable="dialogAction.show([ {text: 'Delete this territory', callback: 'confirmDeleteTerritory({{territory}})' }, { text: 'Edit territory', callback: 'redirectToEdit({{territory}})' }, {text: 'Reset Database', callback: 'confirmResetDatabase'} ])">
                     <a href="#streets" ng-click="srv.setCurTerritory(territory)">
                         <h2>{{territory.ident}}</h2>
                         <p ng-show="territory.city">({{territory.city}})</p>

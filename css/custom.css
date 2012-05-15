@@ -359,7 +359,7 @@ a.btn, button, input[type=submit] {
   -moz-box-shadow: inset 0px 1px 0px 0px white;
   -webkit-box-shadow: inset 0px 1px 0px 0px white;
   box-shadow: inset 0px 1px 0px 0px white;
-  background-color: transparent;
+  background-color: #929292;
   -moz-border-radius: 6px;
   -webkit-border-radius: 6px;
   border-radius: 6px;
@@ -396,17 +396,23 @@ header a.btn.back,
   padding: 6px 10px;
 }
 
-/* line 3, ../sass/custom.sass */
+/* line 2, ../sass/custom.sass */
+a:active, a:focus, a:hover, a:link, a {
+  outline: none;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+}
+
+/* line 6, ../sass/custom.sass */
 footer > ul, #footer > ul {
   display: table;
   width: 100%;
   table-layout: fixed;
 }
-/* line 7, ../sass/custom.sass */
+/* line 10, ../sass/custom.sass */
 footer > ul > li, #footer > ul > li {
   display: table-cell;
 }
-/* line 9, ../sass/custom.sass */
+/* line 12, ../sass/custom.sass */
 footer > ul > li > a, #footer > ul > li > a {
   display: block;
   width: auto;
@@ -415,40 +421,40 @@ footer > ul > li > a, #footer > ul > li > a {
   padding: 0 1px;
 }
 
-/* line 17, ../sass/custom.sass */
+/* line 20, ../sass/custom.sass */
 ul.listview li h2 {
   font-size: 18px;
   font-weight: bold;
   margin: 8px 0;
 }
-/* line 21, ../sass/custom.sass */
+/* line 24, ../sass/custom.sass */
 ul.listview li p {
   margin: -2px 0 8px 0;
 }
-/* line 23, ../sass/custom.sass */
+/* line 26, ../sass/custom.sass */
 ul.listview li > a {
   overflow: hidden;
   min-height: 45px;
 }
-/* line 26, ../sass/custom.sass */
+/* line 29, ../sass/custom.sass */
 ul.listview li > a:after {
   top: 26%;
   line-height: 100%;
 }
 
-/* line 30, ../sass/custom.sass */
+/* line 33, ../sass/custom.sass */
 span.icon-only, h2.icon-only {
   background-repeat: no-repeat;
   background-position: 0 50%;
   padding-left: 20px;
 }
-/* line 34, ../sass/custom.sass */
+/* line 37, ../sass/custom.sass */
 span.icon, h2.icon {
   background-repeat: no-repeat;
   background-position: 0 50%;
   padding-left: 20px;
 }
-/* line 38, ../sass/custom.sass */
+/* line 41, ../sass/custom.sass */
 span.icon.gender, h2.icon.gender {
   width: 16px;
   height: 16px;
@@ -456,16 +462,16 @@ span.icon.gender, h2.icon.gender {
   padding: 0;
   background: url() no-repeat scroll 0 0;
 }
-/* line 44, ../sass/custom.sass */
+/* line 47, ../sass/custom.sass */
 span.icon.gender.male, h2.icon.gender.male {
   background-image: url("./user.png");
 }
-/* line 46, ../sass/custom.sass */
+/* line 49, ../sass/custom.sass */
 span.icon.gender.female, h2.icon.gender.female {
   background-image: url("./user-yellow-female.png");
 }
 
-/* line 49, ../sass/custom.sass */
+/* line 52, ../sass/custom.sass */
 ul.listview-splitbtn li {
   overflow: hidden;
   padding: 0 10px;
@@ -476,17 +482,17 @@ ul.listview-splitbtn li {
   background-color: #fafafa;
   position: relative;
 }
-/* line 58, ../sass/custom.sass */
+/* line 61, ../sass/custom.sass */
 ul.listview-splitbtn li h2 {
   font-size: 18px;
   font-weight: bold;
   margin: 8px 0 4px 0;
 }
-/* line 62, ../sass/custom.sass */
+/* line 65, ../sass/custom.sass */
 ul.listview-splitbtn li p {
   margin: 4px 0 8px 0;
 }
-/* line 64, ../sass/custom.sass */
+/* line 67, ../sass/custom.sass */
 ul.listview-splitbtn li > a {
   position: relative;
   display: block;
@@ -494,60 +500,61 @@ ul.listview-splitbtn li > a {
   font-weight: normal;
   color: #222222;
   text-decoration: none;
-  padding-right: 30px;
+  padding-right: 40px;
+  overflow: hidden;
 }
 
-/* line 74, ../sass/custom.sass */
+/* line 78, ../sass/custom.sass */
 ul.listview-splitbtn > li a:nth-child(1n+2) {
   position: absolute;
   width: 40px;
   height: 40px;
-  right: 0;
+  right: 10px;
   top: 0;
   margin: 0;
   padding: 0;
   z-index: 2;
 }
-/* line 83, ../sass/custom.sass */
+/* line 87, ../sass/custom.sass */
 ul.listview-splitbtn > li a:nth-child(1n+1), ul.listview-splitbtn > li a:nth-child(1n+2) {
   background: none;
 }
 
-/* line 86, ../sass/custom.sass */
+/* line 90, ../sass/custom.sass */
 ul.listview-splitbtn > li a.icon.comment-add {
   color: transparent;
   background: url("./comment_add_32.png") no-repeat scroll 50% 50%;
 }
 
-/* line 91, ../sass/custom.sass */
+/* line 95, ../sass/custom.sass */
 input, textarea, select, .uneditable-input {
   height: auto;
 }
 
-/* line 95, ../sass/custom.sass */
+/* line 99, ../sass/custom.sass */
 .row.align-left {
   text-align: left;
 }
-/* line 97, ../sass/custom.sass */
-.row.textarea {
+/* line 101, ../sass/custom.sass */
+.row.row-textarea {
   height: auto;
 }
-/* line 99, ../sass/custom.sass */
-.row.textarea > textarea {
+/* line 103, ../sass/custom.sass */
+.row.row-textarea > textarea {
   width: 100%;
   border: 0 none;
-  margin: 34px 0 9px 0;
+  margin: 5px 0 9px 0;
   padding: 10px 10px 10px 14px;
 }
 
-/* line 107, ../sass/custom.sass */
+/* line 111, ../sass/custom.sass */
 form .row > input {
   position: absolute;
   right: 10px;
   top: 0;
 }
 
-/* line 112, ../sass/custom.sass */
+/* line 116, ../sass/custom.sass */
 div.dialog {
   position: absolute;
   top: 0;
@@ -555,12 +562,46 @@ div.dialog {
   left: 0;
   right: 0%;
   z-index: 99;
-  background-color: #d8d8d8;
+  background-color: rgba(0, 0, 0, 0.8);
 }
-/* line 120, ../sass/custom.sass */
+/* line 124, ../sass/custom.sass */
 div.dialog .wrapper {
+  background-color: #d8d8d8;
   text-align: center;
   width: 90%;
-  margin: 0 auto;
-  border: 1px solid black;
+  margin: 35px auto 0 auto;
+  padding: 10px;
+  border: 1px solid #888888;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+}
+/* line 132, ../sass/custom.sass */
+div.dialog ul {
+  list-style-type: none;
+  left: 0;
+  margin: 0;
+  padding: 0;
+}
+/* line 137, ../sass/custom.sass */
+div.dialog ul li {
+  padding: 5px 0;
+}
+/* line 139, ../sass/custom.sass */
+div.dialog ul li button {
+  width: 90%;
+  padding: 10px;
+}
+
+/* line 143, ../sass/custom.sass */
+p.span-list {
+  white-space: nowrap;
+}
+/* line 146, ../sass/custom.sass */
+p.span-list > span:before {
+  content: ", ";
+  padding: 0;
+  margin: 0;
 }

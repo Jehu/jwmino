@@ -1,5 +1,6 @@
 lang = {
     'Territories': 'Gebiete'
+    ,'Addresses': 'Adressen'
     ,'Territory':'Gebiet'
     ,'Settings': 'Einstellungen'
     ,'About': 'Info'
@@ -28,6 +29,7 @@ lang = {
     ,'Age': 'Alter'
     ,'Normal': 'Normal'
     ,'Normal visit': 'Besuch'
+    ,'Normal visits': 'Besuche'
     ,'Return visit': 'Rückbes.'
     ,'Note': 'Notiz'
     ,'Notes':'Notizen'
@@ -52,6 +54,7 @@ lang = {
     ,'female': 'Frau'
     ,'return_visit': 'Rückbes.'
     ,'not_interested': 'Kein Interesse'
+    ,'Visit type':'Art des Besuchs'
     ,'normal': 'Normal'
     ,'study': 'Studium'
     ,'nh': 'NH'

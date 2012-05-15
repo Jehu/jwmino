@@ -2,10 +2,16 @@
     <div id="wrapper">
         <div id="scroller">
             <ul class="listview">
-                <li ng-repeat="street in streets" ngm-touchable="dialogAction.show([ {text: 'Delete steet', callback: 'confirmDeleteStreet({{street}})' } ])">
-                    <a href="#notes"  ng-click="[ srv.setCurStreet(street), srv.refreshAddresses($parent.addressFilter)]">
+                <li ng-repeat="street in streets"  ngm-touchable="dialogAction.show([ {text: 'Delete street', callback: 'confirmDeleteStreet({{street}})' }, { text: 'Edit street', callback: 'redirectToEdit({{street}})'} ])">
+                    <a href="#notes"  ng-click="[ srv.setCurStreet(street), srv.refreshAddresses($parent.addressFilter)]" ng-init="getAddrCount($index)">
                         <h2>{{street.name}}</h2>
-                        <p>{{street.addresses[0].housenumber}} FIXME: Anzahl Adressen, vielleicht mit Anzahl NH, RB u.s.w</p>
+                        <p ng-show="addressInfos[$index].addrCounts.summary > 0" class="span-list">{{addressInfos[$index].addrCounts.summary}} {{'Addresses'|i18n}}<span ng-show="addressInfos[$index].addrCounts.normal > 0">{{addressInfos[$index].addrCounts.normal}} {{'normal'|i18n}}</span>
+<span ng-show="addressInfos[$index].addrCounts.nh">{{addressInfos[$index].addrCounts.nh}} {{'nh'|i18n}}</span>
+<span ng-show="addressInfos[$index].addrCounts.ra">{{addressInfos[$index].addrCounts.ra}} {{'ra'|i18n}}</span>
+<span ng-show="addressInfos[$index].addrCounts.not_interested">{{addressInfos[$index].addrCounts.not_interested}} {{'not_interested'|i18n}}</span>
+<span ng-show="addressInfos[$index].addrCounts.return_visit">{{addressInfos[$index].addrCounts.return_visit}} {{'return_visit'|i18n}}</span>
+<span ng-show="addressInfos[$index].addrCounts.foreign_language">{{addressInfos[$index].addrCounts.foreign_language}} {{'foreign_language'|i18n}}</span>
+                        </p>
                     </a>
                 </li>
             </ul>

@@ -7,12 +7,15 @@ ngMobile.factory('jwminoSrv', ['db', function(db) {
         ,curTerritory: {}
         ,curStreet: {}
         ,curAddress: {
+            housenumber: '',
+            info: '',
             gender: 'na',
             type: 'na',
             age: 'na'
         }
         ,curVisit: {
-            type: 'nh'    
+            type: 'nh'
+            ,note: ''
         }
         ,resetCurTerritory: function() {
             this.curTerritory= {};
@@ -22,6 +25,8 @@ ngMobile.factory('jwminoSrv', ['db', function(db) {
         }
         ,resetCurAddress: function() {
             this.curAddress = {
+                housenumber: '',
+                info: '',
                 gender: 'na',
                 type: 'na',
                 age: 'na'
@@ -30,6 +35,7 @@ ngMobile.factory('jwminoSrv', ['db', function(db) {
         ,resetCurVisit: function() {
             this.curVisit = {
                 type: 'nh'
+                ,note: ''
             };
         }
         ,saveAddressAndVisit: function() {
@@ -66,7 +72,7 @@ ngMobile.factory('jwminoSrv', ['db', function(db) {
                 });
             }
         }
-        ,saveTerritory: function(territiry) {
+        ,saveTerritory: function(territory) {
             var territory = territory || this.curTerritory;
             if(territory.id) {
                 db.updateTerritory(territory, function(success) {
@@ -111,15 +117,23 @@ ngMobile.factory('jwminoSrv', ['db', function(db) {
             }
         }
         ,saveAddress: function() {
+            var that = this;
             if(this.curAddress.id) {
-                db.updateAddress(this.curAddress, function(success) {
+                db.updateAddress(that.curAddress, function(success) {
                     if(!success) {
+                        that.resetCurAddress();
+                        console.log('not successful');
                     }
                     else {
+                        console.log(that.curAddress);
+                        that.resetCurAddress();
+                        that.refreshAddresses();
+                        console.log('success');
                     }
                 });
             }
             else {
+                console.log('no address id');
             }
         }
         ,refreshTerritories: function(scope) {
@@ -170,6 +184,13 @@ ngMobile.factory('jwminoSrv', ['db', function(db) {
                 cb(true);
             });
         }
+        ,deleteAddress: function(item , cb) {
+            var tmpAddress = item;
+            var cb = cb || function() {}; 
+            db.deleteAddress(tmpAddress, function(success) {
+                cb(true);
+            });
+        }
         ,deleteTerritory: function(territory, cb) {
             var tmpTerritory = territory || this.curTerritory;
             var cb = cb || function() {}; 
@@ -178,13 +199,15 @@ ngMobile.factory('jwminoSrv', ['db', function(db) {
                 cb(true);
             });
         }
-        ,deleteVisit: function() {
-            var tmpVisit = this.curVisit;
+        ,deleteVisit: function(visit, cb) {
+            var tmpVisit = visit;
+            var cb = cb || function() {}; 
             var that = this;
             this.curVisit = {};
             db.deleteVisit(tmpVisit, function(success) {
                 if(success) {
                     that.setVisits();
+                    cb(true);
                 }
             });
         }
@@ -195,17 +218,19 @@ ngMobile.factory('jwminoSrv', ['db', function(db) {
             this.curStreet = item;
         }
         ,setCurAddress: function (item) {
+            console.log(item);
             this.curAddress = item;
             this.setVisits();
         }
         ,setVisits: function() {
             var that = this;
-            this.curAddress.visits.list(null,function(v) {
-                that.visits = _.sortBy(v, 'date').reverse();
-            });
+            if(this.curAddress.visits != undefined) {
+                this.curAddress.visits.list(null,function(v) {
+                    that.visits = _.sortBy(v, 'date').reverse();
+                });
+            }
         }
         ,setCurVisit: function(item) {
-            console.log(item);
             this.curVisit = item;
         }
         ,appReset: function() {

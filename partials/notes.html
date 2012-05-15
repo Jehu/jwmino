@@ -2,8 +2,8 @@
     <div id="wrapper">
         <div id="scroller">
             <ul class="listview-splitbtn">
-                <li ng-repeat="address in addresses">
-                    <a href="#visits" ng-click="srv.setCurAddress(address)">
+                <li ng-repeat="address in addresses" ngm-touchable="dialogAction.show([ { text: 'Delete Address', callback: 'confirmDeleteAddress({{address}})' }, { text: 'Edit Address', callback: 'redirectToEdit({{address}})'} ]);">
+                    <a href="#visits" ng-click="[ srv.setCurAddress(address), srv.setVisits() ]">
                         <h2 class="icon" style="background-image: url('./css/{{address.the_visits[0].type || 'dummy'}}.png')">
                             <span style="display: inline-block; min-width: 55px;">#{{address.housenumber}}
                             <span ng-show="address.info"> {{address.info}}</span></span>
@@ -11,13 +11,15 @@
                             <span ng-show="address.age != 'na'" style="font-size: 14px; font-weight: normal;">{{address.age}}</span>
                             {{address.name}}
                         </h2>
-                        <p style="margin-top: 8px" ng-show="address.the_visits[0].date">
+                        <p style="margin-top: 8px; float: left;" ng-show="address.the_visits[0].date">
                             {{address.the_visits[0].date|date:'short'}}:
+                            <div style="float: left; margin: 8px 0 0 10px;">
                             <span ng-hide="address.the_visits[0].type == 'normal'"> {{address.the_visits[0].type|i18n}}</span>
-                            <span ng-show="address.the_visits[0].note"> {{address.the_visits[0].note}}</span>
+                            <span ng-show="address.the_visits[0].note" ng-bind-html-unsafe="address.the_visits[0].note|nl2br"></span>
+                            </div>
                         </p>
                     </a>
-                    <a href="#edit-visit" class="icon comment-add" ng-click="srv.setCurAddress(address)">&nbsp;</a>
+                    <a href="#edit-visit" class="icon comment-add" ng-click="[ srv.setCurAddress(address), srv.resetCurVisit() ]">&nbsp;</a>
                 </li>
             </ul>
         </div>
@@ -30,4 +32,6 @@
             <li><a href="#edit-note" class="icon add" ng-click="[ srv.resetCurAddress(), srv.resetCurVisit() ]">Add Note</a></li>
         </ul>
     </div>
+    <ngm-dialog-confirm></ngm-dialog-confirm>
+    <ngm-dialog-action></ngm-dialog-action>
 </div>
