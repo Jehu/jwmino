@@ -69,7 +69,7 @@ function TerritoriesCntl($scope, $location, jwminoSrv) {
     srv.refreshTerritories($scope);
 }
 
-function StreetsCntl($scope, $location, jwminoSrv) {
+function StreetsCntl($scope, $location, jwminoSrv, $defer) {
     var s = $scope;
     var srv = $scope.srv = jwminoSrv;
     var db = srv.getDb();
@@ -111,9 +111,9 @@ function StreetsCntl($scope, $location, jwminoSrv) {
 
     s.getAddrCount = function(index) {
         s.refreshStreetInfos(index);
-        setTimeout(function() {
-            s.$digest();
-        },200);
+        $defer(function() {
+            //s.$digest();
+        },300);
     }
 
     // calculate street infos (visit types count)

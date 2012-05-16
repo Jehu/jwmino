@@ -39,6 +39,7 @@
         <!-- Main Stylesheet -->
         <!--link href="css/ng-mobile.css" rel="stylesheet" type="text/css" /-->
         <link href="css/custom.css" rel="stylesheet" type="text/css" />
+        <link href="lib/jquery.jscrollpane.css" rel="stylesheet" type="text/css" />
 
         <script src="lib/sprintf-0.7-beta1.js" type="application/javascript"></script>
         <script src="i18n/de_DE.js" type="application/javascript"></script>
@@ -50,7 +51,9 @@
         <script src="./js/filter.nl2br.js"></script>
         <script src="./lib/hammer.js"></script>
         <script src="./lib/jquery.hammer.js"></script>
-        <script src="./lib/iscroll4/src/iscroll.js" type="application/javascript"></script>
+        <!--script src="./lib/iscroll4/src/iscroll.js" type="application/javascript"></script-->
+        <!--script src="./lib/jquery.mousewheel.js"></script-->
+        <script src="./lib/jquery.jscrollpane.min.js"></script>
         <script type="text/javascript">
             // for iScroll
             document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
@@ -68,9 +71,9 @@
 
     </head>
     <body ng-app="ngMobile" ng-controller="MainCntl" ng-cloak>
-        <header ng-include="header"></header>
-        <div ng-view id="content"></div>
-        <footer ng-include="footer"></footer>
+        <header ng-include="header" ng-cloak></header>
+        <div ng-view id="content" ng-cloak></div>
+        <footer ng-include="footer" ng-cloak></footer>
         <div id="loader" ngm-remove-preloader></div>
     </body>
 </html>

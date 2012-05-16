@@ -104,12 +104,12 @@ footer, #footer {
 /* line 83, ../sass/ng-mobile.sass */
 #wrapper {
   position: absolute;
-  z-index: 1;
   top: 45px;
   bottom: 48px;
-  left: 0;
-  width: 100%;
   background: #d2d2d2;
+  width: 100%;
+  z-index: 1;
+  left: 0;
   overflow: auto;
 }
 /* line 92, ../sass/ng-mobile.sass */
@@ -119,10 +119,10 @@ footer, #footer {
 
 /* line 95, ../sass/ng-mobile.sass */
 #scroller {
+  width: 100%;
   position: absolute;
   z-index: 1;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  width: 100%;
   padding: 0;
 }
 /* line 101, ../sass/ng-mobile.sass */

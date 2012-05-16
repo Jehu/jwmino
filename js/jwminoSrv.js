@@ -218,7 +218,6 @@ ngMobile.factory('jwminoSrv', ['db', function(db) {
             this.curStreet = item;
         }
         ,setCurAddress: function (item) {
-            console.log(item);
             this.curAddress = item;
             this.setVisits();
         }

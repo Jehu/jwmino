@@ -104,12 +104,12 @@ footer, #footer {
 /* line 83, ../sass/ng-mobile.sass */
 #wrapper {
   position: absolute;
-  z-index: 1;
   top: 45px;
   bottom: 48px;
-  left: 0;
-  width: 100%;
   background: #d2d2d2;
+  width: 100%;
+  z-index: 1;
+  left: 0;
   overflow: auto;
 }
 /* line 92, ../sass/ng-mobile.sass */
@@ -119,10 +119,10 @@ footer, #footer {
 
 /* line 95, ../sass/ng-mobile.sass */
 #scroller {
+  width: 100%;
   position: absolute;
   z-index: 1;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  width: 100%;
   padding: 0;
 }
 /* line 101, ../sass/ng-mobile.sass */
@@ -397,7 +397,7 @@ header a.btn.back,
 }
 
 /* line 2, ../sass/custom.sass */
-a:active, a:focus, a:hover, a:link, a {
+a:active, a:focus, a:hover, a:link, a, button, input[type=submit] {
   outline: none;
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
 }
@@ -500,7 +500,7 @@ ul.listview-splitbtn li > a {
   font-weight: normal;
   color: #222222;
   text-decoration: none;
-  padding-right: 40px;
+  padding-right: 30px;
   overflow: hidden;
 }
 
@@ -509,7 +509,7 @@ ul.listview-splitbtn > li a:nth-child(1n+2) {
   position: absolute;
   width: 40px;
   height: 40px;
-  right: 10px;
+  right: 0;
   top: 0;
   margin: 0;
   padding: 0;
@@ -526,20 +526,20 @@ ul.listview-splitbtn > li a.icon.comment-add {
   background: url("./comment_add_32.png") no-repeat scroll 50% 50%;
 }
 
-/* line 95, ../sass/custom.sass */
+/* line 94, ../sass/custom.sass */
 input, textarea, select, .uneditable-input {
   height: auto;
 }
 
-/* line 99, ../sass/custom.sass */
+/* line 98, ../sass/custom.sass */
 .row.align-left {
   text-align: left;
 }
-/* line 101, ../sass/custom.sass */
+/* line 100, ../sass/custom.sass */
 .row.row-textarea {
   height: auto;
 }
-/* line 103, ../sass/custom.sass */
+/* line 102, ../sass/custom.sass */
 .row.row-textarea > textarea {
   width: 100%;
   border: 0 none;
@@ -547,14 +547,14 @@ input, textarea, select, .uneditable-input {
   padding: 10px 10px 10px 14px;
 }
 
-/* line 111, ../sass/custom.sass */
+/* line 110, ../sass/custom.sass */
 form .row > input {
   position: absolute;
   right: 10px;
   top: 0;
 }
 
-/* line 116, ../sass/custom.sass */
+/* line 115, ../sass/custom.sass */
 div.dialog {
   position: absolute;
   top: 0;
@@ -564,7 +564,7 @@ div.dialog {
   z-index: 99;
   background-color: rgba(0, 0, 0, 0.8);
 }
-/* line 124, ../sass/custom.sass */
+/* line 123, ../sass/custom.sass */
 div.dialog .wrapper {
   background-color: #d8d8d8;
   text-align: center;
@@ -578,30 +578,36 @@ div.dialog .wrapper {
   -o-border-radius: 5px;
   border-radius: 5px;
 }
-/* line 132, ../sass/custom.sass */
+/* line 131, ../sass/custom.sass */
 div.dialog ul {
   list-style-type: none;
   left: 0;
   margin: 0;
   padding: 0;
 }
-/* line 137, ../sass/custom.sass */
+/* line 136, ../sass/custom.sass */
 div.dialog ul li {
   padding: 5px 0;
 }
-/* line 139, ../sass/custom.sass */
+/* line 138, ../sass/custom.sass */
 div.dialog ul li button {
   width: 90%;
   padding: 10px;
 }
 
-/* line 143, ../sass/custom.sass */
+/* line 142, ../sass/custom.sass */
 p.span-list {
   white-space: nowrap;
 }
-/* line 146, ../sass/custom.sass */
+/* line 145, ../sass/custom.sass */
 p.span-list > span:before {
   content: ", ";
   padding: 0;
   margin: 0;
+}
+
+/* overwrite */
+/* line 151, ../sass/custom.sass */
+#scroller {
+  position: relative;
 }
