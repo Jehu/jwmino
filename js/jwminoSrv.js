@@ -79,8 +79,6 @@ ngMobile.factory('jwminoSrv', ['db', function(db) {
                     if(!success) {
                     }
                     else {
-                        //this.resetCurTerritory();
-                        //this.refreshTerritories();
                     }
                 });
             }
@@ -90,7 +88,6 @@ ngMobile.factory('jwminoSrv', ['db', function(db) {
                     {
                     }
                     else {
-                        //this.resetCurTerritory();
                     }
                 });
             }
@@ -98,7 +95,7 @@ ngMobile.factory('jwminoSrv', ['db', function(db) {
         ,saveStreet: function() {
             var that = this;
             if(this.curStreet.id) {
-                db.updateStreet(this.curStreet, function(success) {
+                db.updateStreet(that.curStreet, function(success) {
                     if(!success) {
                     }
                     else {
@@ -107,7 +104,7 @@ ngMobile.factory('jwminoSrv', ['db', function(db) {
                 });
             }
             else {
-                db.createStreet(this.curStreet, this.curTerritory, function(success) {
+                db.createStreet(that.curStreet, that.curTerritory, function(success) {
                     if(!success) {
                     }
                     else {
@@ -145,9 +142,9 @@ ngMobile.factory('jwminoSrv', ['db', function(db) {
         }
         ,refreshStreets: function(scope) {
             db.getStreetsByTerritory(this.curTerritory, function(results) {
-                scope.$apply(function() {
+                scope.$defer(function() {
                     scope.streets = results;
-                });
+                },0);
             });
         }
         ,refreshVisits: function(scope) {
@@ -169,9 +166,9 @@ ngMobile.factory('jwminoSrv', ['db', function(db) {
                     a.the_visits  = [];
                     a.visits.list(null,function(v) {
                         a.the_visits = _.sortBy(v, 'date').reverse();
-                        scope.$apply(function() {
+                        scope.$defer(function() {
                             scope.addresses = addresses;
-                        });
+                        },0);
                     });
                 });
             });

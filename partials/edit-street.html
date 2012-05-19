@@ -1,18 +1,22 @@
 <div ng-controller="EditStreetCntl">
     <div id="header">
-        <h1 ng-show="srv.curStreet.id">{{'Edit Street in %s %s'|i18n:srv.curTerritory.ident:srv.curTerritory.city }}</h1>
-        <h1 ng-hide="srv.curStreet.id">{{'Create Street for %s %s'|i18n:[srv.curTerritory.ident,srv.curTerritory.city]}}</h1>
+        <h1 ng-show="srv.curStreet.id">{{'Edit Street'|i18n}}</h1>
+        <h1 ng-hide="srv.curStreet.id">{{'Create Street'|i18n}}</h1>
     </div>
     <div id="wrapper">
         <div id="scroller">
             <form ng-submit="[ srv.saveStreet(), $location.url('/streets') ]">
                 <fieldset>
+                    <p ng-show="srv.curStreet.id">{{'Edit Street in %s %s'|i18n:[srv.curTerritory.ident,srv.curTerritory.city] }}</p>
+                    <p ng-hide="srv.curStreet.id">{{'Create Street for %s %s'|i18n:[srv.curTerritory.ident,srv.curTerritory.city]}}</p>
                     <div class="row">
                         <label for="name">{{'Name'|i18n}}</label>
-                        <input type="text" id="name" ng-model="srv.curStreet.name" placeholder="{{'Street name'|i18n}}">
+                        <input type="text" id="name" ng-model="curStreet.name" placeholder="{{'Street name'|i18n}}">
                     </div>
                 </fieldset>
-                <input type="submit" value="{{'Save'|i18n}}" />
+                <div class="row">
+                    <input type="submit" value="{{'Save'|i18n}}" />
+                </div>
             </form>
         </div>
     </div>

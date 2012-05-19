@@ -28,15 +28,18 @@ ngMobile.config(function($routeProvider, $locationProvider) {
 function TerritoriesCntl($scope, $location, jwminoSrv) {
     var s   = $scope;
     var srv = $scope.srv = jwminoSrv;
+    var db = jwminoSrv.getDb();
 
     $scope.territories = [];
     $scope.setHeaderText('Territories');
 
     $scope.tmpTerritoryToDelete = undefined;
 
-    s.redirectToEdit = function(item) {
-        srv.setCurTerritory(item);
-        $location.url('/edit-territory');
+    $scope.redirectToEdit = function(item) {
+        db.getTerritoryById(item.id, function(result) {
+            jwminoSrv.setCurTerritory(result);
+            $location.path('/edit-territory');
+        });
     }
 
     s.confirmDeleteTerritory = function(territory) {
@@ -74,6 +77,7 @@ function StreetsCntl($scope, $location, jwminoSrv, $defer) {
     var srv = $scope.srv = jwminoSrv;
     var db = srv.getDb();
     $scope.$location = $location;
+    $scope.$defer = $defer;
 
     $scope.streets = [];
     $scope.addresses = [];
@@ -85,12 +89,14 @@ function StreetsCntl($scope, $location, jwminoSrv, $defer) {
     srv.refreshStreets($scope);
     srv.refreshAddresses($scope);
 
-    s.redirectToEdit = function(item) {
-        srv.setCurStreet(item);
-        $location.url('/edit-street');
+    $scope.redirectToEdit = function(item) {
+        db.getStreetById(item.id, function(result) {
+            jwminoSrv.setCurStreet(result);
+            $location.path('/edit-street');
+        });
     }
 
-    s.tmpStreetToDelete = undefined; 
+    s.tmpStreetToDelete = undefined;
     $scope.confirmDeleteStreet = function(street) {
         if(street != undefined) {
             s.tmpStreetToDelete = street;
@@ -106,14 +112,11 @@ function StreetsCntl($scope, $location, jwminoSrv, $defer) {
             s.tmpStreetToDelete = undefined;
         }
     };
-    
+
     $scope.addressInfos = [];
 
     s.getAddrCount = function(index) {
         s.refreshStreetInfos(index);
-        $defer(function() {
-            //s.$digest();
-        },300);
     }
 
     // calculate street infos (visit types count)
@@ -139,15 +142,18 @@ function StreetsCntl($scope, $location, jwminoSrv, $defer) {
                         }
                     });
                 });
-                $scope.addressInfos.push({ id: street.id, addrCounts: counts});
+                $defer(function() {
+                    $scope.addressInfos.push({ id: street.id, addrCounts: counts});
+                },300);
         });
     }
 }
 
-function NotesCntl($scope, $location, jwminoSrv) {
+function NotesCntl($scope, $location, jwminoSrv, $defer) {
     var s = $scope;
     var srv = $scope.srv = jwminoSrv;
     var db = srv.getDb();
+    $scope.$defer = $defer;
 
     //$scope.addresses = srv.addresses;
     $scope.setHeaderText('Notes');
@@ -177,9 +183,10 @@ function NotesCntl($scope, $location, jwminoSrv) {
     }
 }
 
-function VisitsCntl($scope, jwminoSrv) {
+function VisitsCntl($scope, jwminoSrv, $defer) {
     var s = $scope;
     var srv = $scope.srv = jwminoSrv;
+    $scope.$defer = $defer;
 
     srv.refreshVisits($scope);
 
@@ -206,7 +213,7 @@ function EditVisitCntl($scope, $location, jwminoSrv) {
     var srv = $scope.srv = jwminoSrv;
     $scope.$location = $location;
     $scope.curVisit = jwminoSrv.curVisit;
-    
+
     $scope.setHeaderText('Visit');
     //$scope.dataVisitTypeSelect = [
     //    {"key": "nh", "value": "NH"},
@@ -234,14 +241,18 @@ function EditTerritoryCntl($scope, jwminoSrv) {
 
     var headerText = (srv.curTerritory.id) ?  'Edit Territory' : 'Create Territory';
     $scope.setHeaderText(headerText);
+
 }
 
 function EditStreetCntl($scope, $location, jwminoSrv) {
     var s = $scope;
     var srv = $scope.srv = jwminoSrv;
+    var db = jwminoSrv.getDb();
     $scope.$location = $location;
+    $scope.curStreet = jwminoSrv.curStreet;
 
     var headerText = (srv.curStreet.id) ? 'Create Street' : 'Edit Street';
+
 }
 
 function EditAddressCntl($scope, $location, jwminoSrv) {

@@ -1,50 +1,23 @@
 <div ng-controller="EditVisitCntl">
     <div id="wrapper">
         <div id="scroller">
-            <form class="form-horizontal" ng-submit="[ srv.saveVisit(), $location.url('/visits') ]">
+            <form class="form-horizontal" ng-submit="[ srv.saveVisit(), $location.url('/notes') ]">
+
                 <fieldset>
-                    <legend>{{'Note'|i18n}}</legend>
                     <div class="row row-textarea">
+                        <label>{{'Note'|i18n}}</label>
                         <textarea ng-model="srv.curVisit.note" placeholder="{{'Note'|i18n}}" style="width: 92%; height: 30px;"></textarea>
                     </div>
-                </fieldset>
-                <fieldset>
-                    <legend>{{'Visit type'|i18n}}</legend>
                     <div class="row">
-                        <label class="bg" for="nh">
-                            {{'nh'|i18n}}
-                            <input id="nh" type="radio" ng-model="curVisit.type" value="nh" />
-                        </label>
-                    </div>
-                    <div class="row">
-                        <label class="bg" for="normal">
-                            {{'normal'|i18n}}
-                            <input id="normal" type="radio" ng-model="curVisit.type" value="normal" />
-                        </label>
-                    </div>
-                    <div class="row">
-                        <label class="bg" for="ra">
-                            {{'ra'|i18n}}
-                            <input id="ra" type="radio" ng-model="curVisit.type" value="ra" />
-                        </label>
-                    </div>
-                    <div class="row">
-                        <label class="bg" for="not_interested">
-                            {{'not_interested'|i18n}}
-                            <input id="not_interested" type="radio" ng-model="curVisit.type" value="not_interested" />
-                        </label>
-                    </div>
-                    <div class="row">
-                        <label class="bg" for="return_visit">
-                            {{'return_visit'|i18n}}
-                            <input id="return_visit" type="radio" ng-model="curVisit.type" value="return_visit" />
-                        </label>
-                    </div>
-                    <div class="row">
-                        <label class="bg" for="foreign_language">
-                            {{'foreign_language'|i18n}}
-                            <input id="foreign_language" type="radio" ng-model="curVisit.type" value="foreign_language" />
-                        </label>
+                        <label for="type">{{'Visit type'|i18n}}</label>
+                        <select name=type"" ng-model="curVisit.type">
+                            <option value="nh">{{'NH'|i18n}}</option>
+                            <option value="normal">{{'Normal visit'|i18n}}</option>
+                            <option value="ra">{{'Re-audition'|i18n}}</option>
+                            <option value="not_interested">{{'Not interested'|i18n}}</option>
+                            <option value="return_visit">{{'Return visit'|i18n}}</option>
+                            <option value="foreign_language">{{'Foreign lang.'|i18n}}</option>
+                        </select>
                     </div>
                 </fieldset>
                 <div class="row button-group">

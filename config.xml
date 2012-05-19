@@ -2,7 +2,7 @@
 <widget xmlns		= "http://www.w3.org/ns/widgets"
 	xmlns:gap	= "http://phonegap.com/ns/1.0"
 	id		= "com.marcomichely"
-	version 	= "0.2.5">
+	version 	= "0.2.6">
 
 	<name>JWMiNo</name>
 
@@ -15,11 +15,12 @@ Features:
 - add/edit streets
 - add/edit addresses (persons)
 - add/edit visits to that persons
-- filter for address list
 
 Planned features:
+- filter for address list
 - send notes by email
 - import/export/backup
+- sync with an webservice
 - track placements
 
 To track your service time and placements, take look at the app ServiceTime or some other apps that focus this task.

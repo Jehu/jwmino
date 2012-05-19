@@ -234,6 +234,14 @@ angular.module('database', [], function($provide) {
                 Address.load(id, cb);
             },
 
+            getStreetById: function(id, cb) {
+                Street.load(id, cb);
+            },
+
+            getTerritoryById: function(id, cb) {
+                Territory.load(id, cb);
+            },
+
             getAddressesByStreet: function(street, filter, cb) {
                 var addresses= Address.all().filter("street", '=', street.id).order('housenumber', true);
                 if(!filter || filter == 'all') {

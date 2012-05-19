@@ -12,13 +12,14 @@
                         <input type="text" id="city" ng-model="srv.curTerritory.city" placeholder="{{'City'|i18n}}" />
                     </div>
                 </fieldset>
-                <a class="btn" href="#territories" ng-click="srv.saveTerritory()">{{'Save'|i18n}}</a>
-                <span ng-show="curTerritory.id" >
-                    <h3>{{'Delete'|i18n}}</h3>
-                    <p>{{'txt.warning.delete'|i18n}}</p>
-                    <a class="btn" ng-click="[ srv.deleteTerritory(), srv.refreshTerritories() ]" />{{'Delete'|i18n}}</a>
-                </span>
-    
+                <div class="row button-row">
+                    <a class="btn" href="#territories" ng-click="srv.saveTerritory()">{{'Save'|i18n}}</a>
+                    <span ng-show="curTerritory.id" >
+                        <h3>{{'Delete'|i18n}}</h3>
+                        <p>{{'txt.warning.delete'|i18n}}</p>
+                        <a class="btn" ng-click="[ srv.deleteTerritory(), srv.refreshTerritories() ]" />{{'Delete'|i18n}}</a>
+                    </span>
+                </div>
             </form>
         </div>
     </div>
