@@ -2,7 +2,7 @@ angular.module('database', [], function($provide) {
     $provide.factory('db', function() {
         persistence.store.websql.config(persistence, 'jwmino', 'Database for JWMiNo', 6 * 1024 * 1024);
         persistence.debug = false;
-    
+
         /*
          * define model
          */
@@ -11,12 +11,12 @@ angular.module('database', [], function($provide) {
             city: "TEXT"
         });
         Territory.index('ident',{unique:true});
-    
+
         var Street = persistence.define('Street', {
             name: "TEXT"
         });
         Street.index('name');
-    
+
         var Address = persistence.define('Address', {
             housenumber: "INT",
             info: "TEXT",
@@ -27,18 +27,18 @@ angular.module('database', [], function($provide) {
             //emotion: "TEXT" // this could shown by an emoticon
         });
         Address.index('housenumber');
-    
+
         var Visit = persistence.define('Visit', {
             date: "DATE",
             note: "TEXT",
             type: "TEXT"
         });
         Visit.index('date');
-    
+
         var AppConfig = persistence.define('AppConfig', {
             lang: "TEXT"
         });
-    
+
         // not used yet. this could hold all return visit addresses for an extra list
         // but perhaps this is not needed, an query could list them as well (perfomance?)
         //var ReturnVisitAddress = persistence.define('ReturnVisitAddress', {
@@ -49,7 +49,7 @@ angular.module('database', [], function($provide) {
         //    name: "TEXT"
         //});
         //ReturnVisitAddress.index('territory');
-    
+
         /*
          * realations
          */
@@ -57,9 +57,9 @@ angular.module('database', [], function($provide) {
         Street.hasMany('addresses', Address, 'street');
         Address.hasMany('visits', Visit, 'address');
         //ReturnVisitAddress.hasMany('visits', Visit, 'returnvisitaddress'); // not needed yet
-    
+
         persistence.schemaSync();
-    
+
         /*
          * repository
          */
@@ -79,15 +79,15 @@ angular.module('database', [], function($provide) {
                     type: editVisitNote.type
                 });
                 visit.date = new Date();
-    
+
                 persistence.add(address);
                 address.street = street.id;
                 address.visits.add(visit);
-    
+
                 persistence.flush();
                 cb(true);
             },
-    
+
             createVisit: function(visit, address, cb) {
                 // FIXE add validation
                 var visit = new Visit({
@@ -99,31 +99,31 @@ angular.module('database', [], function($provide) {
                 persistence.flush();
                 cb(true);
             },
-    
+
             updateTerritory: function(territory, cb) {
                 // FIXME add validation
                 persistence.flush();
                 cb(true);
             },
-    
+
             updateVisit: function(visit, cb) {
                 // FIXME add validation
                 persistence.flush();
                 cb(true);
             },
-    
+
             updateAddress: function(address, cb) {
                 // FIXME add validation
                 persistence.flush();
                 cb(true);
             },
-    
+
             updateStreet: function(street, cb) {
                 // FIXME add validation
                 persistence.flush();
                 cb(true);
             },
-    
+
             createTerritory: function(item, cb) {
                 if(!item.ident.length) {
                     cb(false);
@@ -138,7 +138,7 @@ angular.module('database', [], function($provide) {
                     cb(true);
                 }
             },
-    
+
             createStreet: function(item, territory, cb) {
                 if(!item.name.length || !territory.ident)
                 {
@@ -154,7 +154,7 @@ angular.module('database', [], function($provide) {
                     cb(true);
                 }
             },
-    
+
             /*
              * Delete specified territory including all dependent data
              */
@@ -192,7 +192,7 @@ angular.module('database', [], function($provide) {
                 persistence.flush();
                 cb(true);
             },
-    
+
             deleteStreet: function(item, cb) {
                 var collection = Territory.all();
                 Street.load(item.id, function(i) {
@@ -219,19 +219,27 @@ angular.module('database', [], function($provide) {
                 persistence.flush();
                 cb(true);
             },
-    
+
             getTerritories: function(cb) {
                 var allTerritories = Territory.all();
                 allTerritories.list(null, cb);
             },
-    
+
             getStreetsByTerritory: function(territory, cb) {
                 var streets = Street.all().filter("territory", '=', territory.id).order('name', true);
                 streets.list(null, cb);
             },
-    
+
             getAddressById: function(id, cb) {
                 Address.load(id, cb);
+            },
+
+            getStreetById: function(id, cb) {
+                Street.load(id, cb);
+            },
+
+            getTerritoryById: function(id, cb) {
+                Territory.load(id, cb);
             },
 
             getAddressesByStreet: function(street, filter, cb) {
@@ -260,17 +268,17 @@ angular.module('database', [], function($provide) {
                                     cb(filtered);
                                 });
                             }
-    
+
                         });
                     });
                 }
             },
-    
+
             getAppConfig: function(cb) {
                 var config = AppConfig.all().limit(1);
                 config.list(null,cb);
             },
-    
+
             setAppConfig: function(given_config, cb) {
                 var self = this;
                 self.getAppConfig(function(config) {
@@ -288,11 +296,11 @@ angular.module('database', [], function($provide) {
                     cb(config);
                 });
             },
-    
+
             reset: function() {
                 persistence.reset();
             },
-    
+
             exportDb: function(cb) {
                 var self = this;
                 var backup = [];
@@ -329,7 +337,6 @@ angular.module('database', [], function($provide) {
                         });
                     });
                 });
-    
             }
         };
     });

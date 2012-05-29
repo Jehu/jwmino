@@ -115,7 +115,6 @@ footer > ul, #footer > ul
   text-align: center
 
 footer > ul > li, #footer > ul > li
-  /*float: left;
   display: inline-block
   overflow: hidden
   line-height: 100%
@@ -124,7 +123,7 @@ footer > ul > li > a, #footer > ul > li > a
   display: block
   width: 40px
   height: 43px
-  padding-top: 5px 
+  padding-top: 5px
   text-align: center
   text-decoration: none !important
   color: #fff !important
@@ -132,12 +131,8 @@ footer > ul > li > a, #footer > ul > li > a
 footer > ul > li > a.active, #footer > ul > li > a.active
   @include background-image(linear-gradient(top, #666666, #999999 2%, #222222))
 
-/*footer > ul > li > a:active, #footer > ul > li > a:active, footer > ul > li > a:hover, #footer > ul > li > a:hover
-
 .inner-wrap
   padding: 0 10px
-
-
 
 /* listview
 
@@ -159,7 +154,7 @@ ul.listview li
     position: relative
     display: block
     font-size: 14px
-    font-weight: normal 
+    font-weight: normal
     color: $default-text-color
     text-decoration: none
     padding-right: 30px
@@ -208,7 +203,7 @@ input:focus, textarea:focus
   -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6)
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6)
 
-form 
+form
   fieldset
     border: 1px solid $lighter-text-color
     @include border-radius(5px)
@@ -256,19 +251,21 @@ form
       font-size: 12px
       color: $lighter-text-color
       margin: 0
-  .row.group
-    > label
-      width: 90px
-      text-align: center
-      display: inline-block
-      font-weight: bold
-      > input[type=radio],
-      > input[type=checkbox]
-        width: auto
-        margin: 0 50%
-        padding: 0
-        position: relative
-      
+    &.group
+      > label
+        width: 90px
+        text-align: center
+        display: inline-block
+        font-weight: bold
+        > input[type=radio],
+        > input[type=checkbox]
+          width: auto
+          margin: 0 50%
+          padding: 0
+          position: relative
+    &.button-row
+      text-align: right
+      padding: 0 5px
 
 a.btn, button, input[type=submit]
   -moz-box-shadow: inset 0px 1px 0px 0px #ffffff
@@ -293,7 +290,6 @@ a.btn, button, input[type=submit]
 
 /* <= forms end
 
-
 header a.btn.back,
 #header a.btn.back
   position: absolute
@@ -307,5 +303,12 @@ header a.btn.back,
   text-overflow: ellipsis
   max-width: 70px
   padding: 6px 10px
+
+header h1,
+#header h1
+  text-align: center
+  margin: 0 auto
+  overflow: hidden
+  text-overflow: ellipsis
 
 
