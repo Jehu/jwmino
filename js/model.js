@@ -8,12 +8,14 @@ angular.module('database', [], function($provide) {
          */
         var Territory = persistence.define('Territory', {
             ident: "TEXT",
-            city: "TEXT"
+            city: "TEXT",
+            uuid: "TEXT"
         });
-        Territory.index('ident',{unique:true});
+        Territory.index('uuid',{unique:true});
 
         var Street = persistence.define('Street', {
-            name: "TEXT"
+            name: "TEXT",
+            uuid: "TEXT"
         });
         Street.index('name');
 
@@ -23,20 +25,30 @@ angular.module('database', [], function($provide) {
             name: "TEXT",
             gender: "TEXT",
             age: "TEXT",
-            type: "TEXT"
+            type: "TEXT",
+            uuid: "TEXT"
             //emotion: "TEXT" // this could shown by an emoticon
         });
-        Address.index('housenumber');
+        Address.index('uuid', {unique: true});
 
         var Visit = persistence.define('Visit', {
             date: "DATE",
             note: "TEXT",
-            type: "TEXT"
+            type: "TEXT",
+            uuid: "TEXT"
         });
-        Visit.index('date');
+        Visit.index('uuid', {unique: true});
+
+        schema.History = persistence.define('History', {
+            datetime: "DATE",
+            affected_uuid: "TEXT",
+            data: "JSON"
+        });
+        schema.History.index('datetime');
 
         var AppConfig = persistence.define('AppConfig', {
-            lang: "TEXT"
+            lang: "TEXT",
+            client_id: "TEXT"
         });
 
         // not used yet. this could hold all return visit addresses for an extra list
@@ -219,6 +231,41 @@ angular.module('database', [], function($provide) {
                 persistence.flush();
                 cb(true);
             },
+
+
+            /**
+             * write history entry
+             *
+             * @param item object
+             *
+             * Example item object:
+             * {
+             *     action: 'insert'
+             *     ,datetime: 1233432345
+             *     ,table: 'Territory'
+             *     ,data: {
+             *         uuid: 123
+             *         ,ident: 'Blubber bla'
+             *         ,city: 'Testcity'
+             *     }
+             * }
+             */
+            app.sync.writeHistory = function(item) {
+
+                var client_id = 'e400d989-d8aa-49aa-af9b-ec1c0e9b3788'; // FIXME must come from app settings
+                var historyObj = item.data;
+                historyObj.datetime = item.datetime;
+                historyObj.table = item.table;
+                historyObj.action = item.action;
+
+                var entry = new models.History({
+                    'datetime': new Date(item.datetime)
+                    ,'affected_uuid': item.data.uuid
+                    ,'client_id': client_id
+                    ,'data': JSON.stringify(item.data)
+                });
+                persistence.add(entry);
+            };
 
             getTerritories: function(cb) {
                 var allTerritories = Territory.all();
