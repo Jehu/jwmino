@@ -6,9 +6,6 @@ Ext.define('JWMiNo.view.TerritoriesList', {
         ,store: 'territoriesStore'
         ,itemTpl: '{ident} {city}'
         ,onItemDisclosure: true
-        //,xtype: 'list'
-        //,store: 'streetsStore'
-        //,itemTpl: '{ident} {city}'
-        //,onItemDisclosure: true
+        ,scrollable: { direction: 'vertical' }
     }
 });

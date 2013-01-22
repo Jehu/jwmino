@@ -7,5 +7,6 @@ Ext.define('JWMiNo.view.StreetsList', {
         ,store: 'streetsStore'
         ,itemTpl: '{name}'
         ,onItemDisclosure: true
+        ,scrollable: { direction: 'vertical' }
     }
 });

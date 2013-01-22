@@ -3,7 +3,7 @@ Ext.define('JWMiNo.controller.Main', {
     ,requires: [
         'JWMiNo.store.Territories'
     ]
-    ,record: {}
+    ,currentRecord: {} // needed for temprarily caching of currentRecords
 
     ,config: {
         refs: {
@@ -30,12 +30,22 @@ Ext.define('JWMiNo.controller.Main', {
             ,btnSaveStreet: {
                 tap: "onClickSaveStreet"
             }
-            ,'territories list': {
+            ,'territorieslist': {
                 disclose: function(element, record) {
                     this.getTerritoriesView().push({
                         xtype: 'streetslist'
                     });
-                    this.record = record;
+                    this.currentRecord = record;
+                }
+            }
+            ,'streetslist': {
+                disclose: function(element, record) {
+                    this.currentRecord = record;
+                    /*
+                    this.getTerritoriesView().push({
+                        xtype: 'addresseslist'
+                    });
+                    */
                 }
             }
         }
@@ -48,9 +58,7 @@ Ext.define('JWMiNo.controller.Main', {
     }
 
     ,onClickAddStreet: function(a,b,c) {
-        console.log("btn Add Street clicked");
-        var form = this.getTerritoriesView();
-        form.push({
+        this.getTerritoriesView().push({
             xtype: 'streetform'
         });
     }
@@ -64,20 +72,29 @@ Ext.define('JWMiNo.controller.Main', {
 
     ,onClickSaveStreet: function(button) {
         var form = this.getStreetForm();
-        form.setValues({territory_id: this.record.data.id});
+        form.setValues({territory_id: this.currentRecord.data.id});
+        if(!this.currentRecord.data.id) {
+            // FIXME error handling
+            console.log('currentRecord.data.id not set!');
+        }
 
+        // We have to use model if we want to validate against it
         var model = Ext.create('JWMiNo.model.Street', form.getValues());
         var errors = model.validate();
         var message = '';
 
         if(errors.isValid()) {
+            // save data thru store, not model.
             var store = Ext.getStore('streetsStore');
             var streetsList = this.getStreetsListView();
 
             store.add(form.getValues());
             store.sync();
-            form.reset();
-            this.record = {};
+            //form.reset();
+            view = this.getTerritoriesView();
+            view.pop('streetform');
+            view.showPlusButton('btnAddStreet');
+
         }
         else {
             Ext.each(errors.items, function(record) {
@@ -87,8 +104,9 @@ Ext.define('JWMiNo.controller.Main', {
             return false;
         }
     }
-
-    //called when the Application is launched, remove if not needed
-    ,launch: function(app) {
+    ,launch: function() {
+        //streetsStore = Ext.getStore('streetsStore');
+        //streetsStore.removeAll();
+        //streetsStore.sync();
     }
 });

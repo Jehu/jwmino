@@ -10,67 +10,92 @@ Ext.define('JWMiNo.view.Territories', {
 
     ,config: {
         title: 'Gebiete'
-        ,xtype: 'container'
+        //,xtype: 'container'
+        ,autoDestroy: false
         ,iconCls: 'locate'
         ,iconMask: true
         ,scrollable: true
+        ,navigationBar: {
+            //ui: 'dark'
+            docked: 'top'
+            ,defaults: {
+                //hideAnimation: Ext.os.is.Android ? false : {
+                //    type: 'fadeOut'
+                //    ,duration: 200
+                //}
+                //,showAnimation: Ext.os.is.Android ? false : {
+                //    type: 'fadeIn'
+                //    ,duration: 200
+                //}
+            }
+            ,items: [{
+                xtype: 'button'
+                ,align: 'right'
+                ,iconCls: 'add'
+                ,iconMask: true
+                ,action: 'addTerritoryBtnAction'
+                ,itemId: 'btnAddTerritory'
+                ,hidden: false
+            },{
+                xtype: 'button'
+                ,align: 'right'
+                ,iconCls: 'add'
+                ,iconMask: true
+                ,action: 'addStreetBtnAction'
+                ,itemId: 'btnAddStreet'
+                ,hidden: false
+            }]
+        }
         ,items: [{
             xtype: 'territorieslist'
         }]
         ,listeners: {
             push: function(view, item) {
-                var action;
+                var btnId;
                 switch(item.xtype) {
                     case 'territorieslist':
-                        action = 'addTerritoryBtnAction';
+                        btnId = 'btnAddTerritory';
                         break;
                     case 'streetslist':
-                        action = 'addStreetBtnAction';
+                        btnId = 'btnAddStreet';
                         break;
                 }
                 if(item.xtype === "territoryform") {
-                    view.removePlusButton();
+                    view.hidePlusButtons();
                     return;
                 }
-                view.removePlusButton();
-                view.addPlusButton(action);
+                view.showPlusButton(btnId);
             }
             ,back: function(view, item) {
                 var active = this.getActiveItem().xtype;
-                if(active === 'territorieslist') {
-                    view.removePlusButton();
-                    view.addPlusButton('addTerritoryBtnAction');
+                if(active == 'territorieslist') {
+                    view.showPlusButton('btnAddTerritory');
+                }
+                if(active == 'streetslist') {
+                    view.showPlusButton('btnAddStreet');
                 }
             }
-            ,show: function(view, item) {
-                console.log('show');
-            }
             ,activate: function(view, item) {
-                view.removePlusButton();
-                view.addPlusButton('addTerritoryBtnAction');
+                view.showPlusButton('btnAddTerritory');
             }
         }
     }
-    ,addPlusButton: function(action){
-        // FIXME refactor to seperate buttons and just show / hide them on demand
-        var titlebar = this.down('titlebar');
+    ,showPlusButton: function(btnId){
+        this.hidePlusButtons();
+        var navbar = this.getNavigationBar();
+        var btn = navbar.down('#' + btnId);
+        if(btn) {
+            btn.show();
+        }
 
-        // Add "+" Button to parent titlebar
-        titlebar.add(Ext.create('Ext.Button', {
-            align: 'right'
-            ,iconCls: 'add'
-            ,iconMask: true
-            ,action: action
-            ,itemId: 'addBtn'
-        }));
     }
-    ,removePlusButton: function() {
-        var titlebar = this.down('titlebar');
-
-        // remove existing "+" button from parent titlebar, if any exists
-        var existingAddBtn = titlebar.query('#addBtn');
-        if(existingAddBtn.length) {
-            existingAddBtn[0].destroy();
+    ,hidePlusButtons: function() {
+        var navbar = this.getNavigationBar();
+        var btn = navbar.query('button[align=right]');
+        if(btn.length) {
+            Ext.each(btn, function(item) {
+                item.hide();
+            });
         }
     }
 });

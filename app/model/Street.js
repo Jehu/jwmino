@@ -3,7 +3,7 @@ Ext.define('JWMiNo.model.Street',{
     ,config: {
         fields: [
              { name: 'name', type: 'string' }
-             ,'territory_id'
+             ,{ name: 'territory_id', type: 'string' }
         ]
         ,validations: [
              { type: 'presence', field: 'name' }

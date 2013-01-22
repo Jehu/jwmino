@@ -10,6 +10,7 @@ Ext.define('JWMiNo.view.StreetForm', {
         title: 'Neu'
         ,iconCls: 'add'
         ,iconMask: true
+        ,autoDestroy: true
         ,items: [{
             xtype: 'fieldset'
             ,title: 'Straße hinzufügen'
