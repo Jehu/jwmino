@@ -4,7 +4,6 @@ Ext.define('JWMiNo.view.Main', {
 
     requires: [
         'JWMiNo.view.Territories'
-        ,'JWMiNo.view.Streets'
     ],
 
     config: {

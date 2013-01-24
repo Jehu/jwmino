@@ -5,9 +5,9 @@ Ext.define('JWMiNo.store.Territories',{
         autoLoad: true
         ,model: 'JWMiNo.model.Territory'
         ,storeId: 'territoriesStore'
-        //,sorters: 'ident'
-        //,grouper: function(record) {
-        //    return record.get('city')[0]
-        //}
+        ,sorters: 'ident'
+        ,grouper: function(record) {
+            return record.get('city').substr(0,1);
+        }
     }
 });

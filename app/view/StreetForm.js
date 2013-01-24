@@ -1,6 +1,8 @@
 Ext.define('JWMiNo.view.StreetForm', {
     extend: 'Ext.form.Panel'
     ,xtype: 'streetform'
+    ,currentRecord: {}
+    ,relatedRecord: {}
     ,requires: [
         'Ext.form.FieldSet'
         ,'Ext.field.Hidden'

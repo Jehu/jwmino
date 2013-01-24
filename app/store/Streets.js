@@ -5,9 +5,14 @@ Ext.define('JWMiNo.store.Streets',{
         autoLoad: true
         ,model: 'JWMiNo.model.Street'
         ,storeId: 'streetsStore'
-        //,sorters: 'ident'
-        //,grouper: function(record) {
-        //    return record.get('city')[0]
-        //}
+        ,sorters: 'name'
+    }
+    ,filterByTerritory: function(territory) {
+        this.clearFilter();
+        this.filterBy(function(street) {
+            if(street.data.territory_id === territory.data.id) {
+                return true;
+            }
+        });
     }
 });

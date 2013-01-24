@@ -2,7 +2,7 @@ Ext.define('JWMiNo.model.Territory',{
     extend: 'Ext.data.Model'
     ,config: {
         fields: [
-             { name: 'ident', type: 'string' }
+             { name: 'ident', type: 'string' , unique: true }
             ,{ name: 'city', type: 'string' }
             ,{ name: 'processed_at', type: 'date' }
         ]

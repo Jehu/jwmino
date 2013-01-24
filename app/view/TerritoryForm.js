@@ -1,6 +1,7 @@
 Ext.define('JWMiNo.view.TerritoryForm', {
     extend: 'Ext.form.Panel'
     ,xtype: 'territoryform'
+    ,currentRecord: {}
     ,requires: ['Ext.form.FieldSet']
 
     ,config: {

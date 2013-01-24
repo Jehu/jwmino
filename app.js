@@ -14,7 +14,7 @@ Ext.application({
 
     models: ['Territory','Street'],
     stores: ['Territories','Streets'],
-    views: ['Main','Territories','TerritoriesList','TerritoryForm', 'Streets', 'StreetForm', 'StreetsList'],
+    views: ['Main','Territories','TerritoriesList','TerritoryForm', 'StreetForm', 'StreetsList'],
     controllers: ["Main"],
 
     icon: {
